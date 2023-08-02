@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 import { Input, Rating } from '@material-tailwind/react'
 import Navigation from '../Navigation'
 import { useParams } from 'react-router-dom'
@@ -41,6 +42,27 @@ const reviews = { href: '#', average: 4, totalCount: 117 }
 
 const Index = () => {
     const { loai, ma } = useParams()
+    const [disabled, setDisabled] = useState(false);
+
+    const onClick = () => {
+        setDisabled(true);
+        setInterval(() => {
+            setDisabled(false);
+        }, 1000)
+    };
+
+    const openToast = () => {
+        toast('Đã thêm vào giỏ hàng', {
+            duration: 2000,
+            position: 'top-center',
+            className: 'bg-amber-700 w-80',
+            icon: '✅',
+            ariaProps: {
+                role: 'status',
+                'aria-live': 'polite',
+            },
+        });
+    }
     return (
         <>
             <Navigation />
@@ -107,7 +129,7 @@ const Index = () => {
                                 </div>
                             </div>
 
-                            <form className="mt-10">
+                            <div className="mt-10">
                                 {/* Trạng thái */}
                                 <div>
                                     <h3 className="text-sm font-medium text-gray-900">Trạng thái</h3>
@@ -123,20 +145,15 @@ const Index = () => {
                                     <Input type={'number'} />
                                 </div>
                                 <div className='flex justify-between'>
-                                    <button
-                                        type="submit"
-                                        className="mr-1 mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                    <button disabled={disabled} onClick={() => { openToast(); onClick() }}
+                                        // type="submit"
+                                        className="cursor-pointer mr-1 mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                     >
                                         Thêm vào giỏ
-                                    </button><button
-                                        type="submit"
-                                        className="ml-1 mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-amber-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                                    >
-                                        Mua ngay
                                     </button>
                                 </div>
 
-                            </form>
+                            </div>
                         </div>
 
                         <div className="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">

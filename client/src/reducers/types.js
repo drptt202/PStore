@@ -1,1 +1,3 @@
 export const OPEN_CART = 'OPEN_CART'
+export const CHANGE_PASSWORD = 'CHANGE_PASSWORD'
+export const UPDATE_PROFILE = 'UPDATE_PROFILE'

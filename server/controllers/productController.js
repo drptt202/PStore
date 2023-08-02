@@ -27,8 +27,8 @@ exports.getAllbyCategoryandBrand = async (req, res, next) => {
 
 exports.getProductDetails = async (req, res, next) => {
     try {
-        const { category, code } = req.params
-        const product = await Product.find({ $and: [{ Category: category }, { Code: code }] });
+        const { category, name } = req.params
+        const product = await Product.find({ $and: [{ Category: category }, { Name: name }] });
         res.status(200).json({
             status: 'success',
             data: { product }
@@ -40,4 +40,28 @@ exports.getProductDetails = async (req, res, next) => {
 
 exports.upload = async (req, res, next) => {
 
+}
+
+exports.getTop5 = async (req, res, next) => {
+    try {
+        const product = await Product.aggregate([{ $sample: { size: 5 } }]);
+        res.status(200).json({
+            status: 'success',
+            data: { product }
+        })
+    } catch (error) {
+        res.json(error)
+    }
+}
+
+exports.getSelling = async (req, res, next) => {
+    try {
+        const product = await Product.aggregate([{ $sample: { size: 5 } }]);
+        res.status(200).json({
+            status: 'success',
+            data: { product }
+        })
+    } catch (error) {
+        res.json(error)
+    }
 }

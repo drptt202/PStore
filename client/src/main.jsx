@@ -24,11 +24,14 @@ const router = createBrowserRouter([
   },
   {
     path: "/dang-nhap",
-    element: <Login />,
+    element:
+      <Login />
   },
   {
     path: "/dang-ky",
-    element: <Register />,
+    element:
+      <Register />
+
   },
   {
     path: "/don-hang",
@@ -36,7 +39,9 @@ const router = createBrowserRouter([
   },
   {
     path: "/thanh-vien",
-    element: <Profile />,
+
+    element:
+      <Profile />
   },
   {
     path: "/:loai/:ma",

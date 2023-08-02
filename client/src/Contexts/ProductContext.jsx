@@ -5,17 +5,27 @@ export const ProductContext = createContext({})
 
 // eslint-disable-next-line react/prop-types
 export const ProductProvider = ({ children }) => {
-    const [data, setData] = useState({})
+    const [top5, setTop5] = useState([])
+    const [selling, setSelling] = useState([])
+
     useEffect(() => {
-        axiosCustom.get("/")
+        axiosCustom.get("/product/top-5")
             .then((res) => {
-                setData(res.data)
+                setTop5(res.data.data.product)
             }).catch((err) => {
                 console.log(err)
             })
-    })
+    }, [])
+    useEffect(() => {
+        axiosCustom.get("/product/top-selling")
+            .then((res) => {
+                setSelling(res.data.data.product)
+            }).catch((err) => {
+                console.log(err)
+            })
+    }, [])
     const ProductData = {
-        data,
+        top5, selling
     }
     return (
         <ProductContext.Provider value={ProductData}>
