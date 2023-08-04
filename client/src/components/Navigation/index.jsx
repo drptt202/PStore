@@ -256,7 +256,7 @@ const Index = () => {
                                                                         <div className="row-start-1 grid grid-cols-3 gap-x-8 gap-y-10 text-sm">
                                                                             {category.sections.map((section) => (
                                                                                 <div key={section.name}>
-                                                                                    <p id={`${section.name}-heading`} className="font-medium text-gray-900">
+                                                                                    <p id={`${section.name}-heading`} className="font-medium text-indigo-900">
                                                                                         {section.name}
                                                                                     </p>
                                                                                     <ul
@@ -266,7 +266,7 @@ const Index = () => {
                                                                                     >
                                                                                         {section.items.map((item) => (
                                                                                             <li key={item.name} className="flex">
-                                                                                                <a href={item.href} className="hover:text-gray-800">
+                                                                                                <a href={item.href} className="text-black hover:text-gray-800">
                                                                                                     {item.name}
                                                                                                 </a>
                                                                                             </li>
