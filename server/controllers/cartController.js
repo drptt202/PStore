@@ -3,18 +3,28 @@ const Product = require('../models/Product')
 
 const getItems = async (Username, Status, req, res, next) => {
     try {
-        let carts = []
+        let result = []
         const tmp = await Cart.find({ $and: [{ Username: Username }, { Status: Status }] })
-
         for (let item of tmp[0].CartItems) {
             const tmp3 = await Product.find({ Code: item })
-            carts = [...carts, tmp3]
+            result = [...result, tmp3[0]]
         }
+
+        let carts = result.filter((item, index) => {
+            return result.findIndex(obj => obj.Code === item.Code) === index;
+        });
+
+        let count = result.reduce((acc, val) => {
+            acc[val.Code] = (acc[val.Code] || 0) + 1;
+            return acc;
+        }, {});
 
         res.status(200).json({
             status: "success",
             data: {
+                result,
                 carts,
+                count,
                 Status
             }
         })
@@ -103,6 +113,35 @@ exports.checkOut = async function (req, res, next) {
         res.json(err)
     }
 }
+
+exports.delivery = async function (req, res, next) {
+    try {
+        const { Username } = req
+
+        await Cart.updateOne({ $and: [{ Username: Username }, { Status: "To Ship" }] }, {
+            $push: {
+                CartItems: req.params.itemID,
+            },
+        })
+        await Cart.updateOne({ $and: [{ Username: Username }, { Status: "To confirm" }] }, {
+            $pull: {
+                CartItems: req.params.itemID,
+            },
+        })
+        const carts = await Cart.find({ $and: [{ Username: Username }, { Status: "To Ship" }] })
+        res.status(200).json({
+            status: "success",
+            data: {
+                carts,
+                Status: "To Ship"
+            }
+        })
+    }
+    catch (err) {
+        res.json(err)
+    }
+}
+
 
 exports.getAllType1 = async function (req, res, next) {
     const { Username } = req

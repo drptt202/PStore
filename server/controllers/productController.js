@@ -1,4 +1,5 @@
-const Product = require('../models/Product')
+const Product = require('../models/Product');
+const Store = require('../models/Store');
 
 exports.getAllbyCategory = async (req, res, next) => {
     try {
@@ -12,6 +13,19 @@ exports.getAllbyCategory = async (req, res, next) => {
         res.json(error);
     }
 }
+
+exports.store = async (req, res, next) => {
+    try {
+        const store = await Store.find({}, { ProductCode: 1 });
+        res.status(200).json({
+            status: 'success',
+            data: { store: store[0] }
+        })
+    } catch (error) {
+        res.json(error);
+    }
+}
+
 exports.getAllbyCategoryandBrand = async (req, res, next) => {
     try {
         const { category, brand } = req.params

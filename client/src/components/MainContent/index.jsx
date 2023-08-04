@@ -2,8 +2,6 @@ import { useContext } from 'react'
 import { ProductContext } from '../../Contexts/ProductContext'
 const Index = () => {
     const { top5, selling } = useContext(ProductContext)
-    console.log('top5', top5)
-    console.log('selling', selling)
     return (
         <div className="bg-white ">
             <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6 sm:py-16 lg:max-w-7xl lg:px-8">

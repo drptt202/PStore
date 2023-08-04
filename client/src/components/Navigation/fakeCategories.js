@@ -12,13 +12,13 @@ export const categories = [
         featured: [
             {
                 name: 'Sản phẩm nổi bật',
-                href: '#',
+                href: '/console/Play%20station%205%20Standard%20Edition',
                 imageSrc: ps5,
                 imageAlt: 'may-ps5-gia-re',
             },
             {
                 name: 'Bán chạy',
-                href: '#',
+                href: '/console/Nintendo%20Switch%20Oled',
                 imageSrc: nintendo,
                 imageAlt: 'may-nintendo-switch-oled',
             },
@@ -28,23 +28,23 @@ export const categories = [
                 id: 'brand',
                 name: 'Hãng',
                 items: [
-                    { name: 'Sony', href: '#' },
-                    { name: 'Nintendo', href: '#' },
-                    { name: 'Microsoft', href: '#' }
+                    { name: 'Sony', href: '/console?brand=Sony' },
+                    { name: 'Nintendo', href: '/console?brand=Nintendo' },
+                    { name: 'Microsoft', href: '/console?brand=Microsoft' }
                 ],
             },
             {
                 id: 'priceband',
                 name: 'Mức giá',
                 items: [
-                    { name: 'Tăng dần', href: '#' },
-                    { name: 'Giảm dần', href: '#' }
+                    { name: 'Tăng dần', href: '/console?order=ASC' },
+                    { name: 'Giảm dần', href: '/console?order=DESC' }
                 ],
             },
             {
                 id: 'more',
                 name: '',
-                items: [{ name: 'Xem tất cả', href: 'may-game' },]
+                items: [{ name: 'Xem tất cả', href: '/console' },]
             }
         ],
     },
@@ -54,13 +54,13 @@ export const categories = [
         featured: [
             {
                 name: 'Sản phẩm nổi bật',
-                href: '#',
+                href: '/game/FIFA%2023',
                 imageSrc: ff23,
                 imageAlt: 'dia-game-ps4-moi-fifa-23',
             },
             {
                 name: 'Bán chạy',
-                href: '#',
+                href: '/game/FIFA',
                 imageSrc: ff19,
                 imageAlt: 'game-nintendo-switch-fifa-19',
             },
@@ -70,24 +70,24 @@ export const categories = [
                 id: 'brand',
                 name: 'Hãng',
                 items: [
-                    { name: 'Sony', href: '#' },
-                    { name: 'Microsoft', href: '#' },
-                    { name: 'Nintendo', href: '#' },
-                    { name: 'EA', href: '#' }
+                    { name: 'Sony', href: '/game?brand=Sony' },
+                    { name: 'Microsoft', href: '/game?brand=Microsoft' },
+                    { name: 'Nintendo', href: '/game?brand=Nintendo' },
+                    { name: 'EA', href: '/game?brand=EA' }
                 ],
             },
             {
                 id: 'priceband',
                 name: 'Mức giá',
                 items: [
-                    { name: 'Tăng dần', href: '#' },
-                    { name: 'Giảm dần', href: '#' }
+                    { name: 'Tăng dần', href: '/game?order=ASC' },
+                    { name: 'Giảm dần', href: '/game?order=DESC' }
                 ],
             },
             {
                 id: 'more',
                 name: '',
-                items: [{ name: 'Xem tất cả', href: 'game' },]
+                items: [{ name: 'Xem tất cả', href: '/game' },]
             }
         ],
     },
@@ -97,13 +97,13 @@ export const categories = [
         featured: [
             {
                 name: 'Sản phẩm nổi bật',
-                href: '#',
+                href: '/pad/PS5%20DualSense%20White',
                 imageSrc: ps,
                 imageAlt: 'tay-cam-ps5-dualsense',
             },
             {
                 name: 'Bán chạy',
-                href: '#',
+                href: '/pad/Xbox%20Series%20-%20Starfield%20Limited%20Edition',
                 imageSrc: xbox,
                 imageAlt: 'tay-cam-xbox-series',
             },
@@ -113,24 +113,24 @@ export const categories = [
                 id: 'brand',
                 name: 'Hãng',
                 items: [
-                    { name: 'Sony', href: '#' },
-                    { name: 'Nintendo', href: '#' },
-                    { name: 'Microsoft', href: '#' },
-                    { name: 'Razor', href: '#' }
+                    { name: 'Sony', href: '/pad?brand=Sony' },
+                    { name: 'Nintendo', href: '/pad?brand=Nintendo' },
+                    { name: 'Microsoft', href: '/pad?brand=Microsoft' },
+                    { name: 'Razor', href: '/pad?brand=Razor' }
                 ],
             },
             {
                 id: 'priceband',
                 name: 'Mức giá',
                 items: [
-                    { name: 'Tăng dần', href: '#' },
-                    { name: 'Giảm dần', href: '#' }
+                    { name: 'Tăng dần', href: '/pad?order=ASC' },
+                    { name: 'Giảm dần', href: '/pad?order=DESC' }
                 ],
             },
             {
                 id: 'more',
                 name: '',
-                items: [{ name: 'Xem tất cả', href: 'phu-kien' },]
+                items: [{ name: 'Xem tất cả', href: '/pad' },]
             }
         ],
     },

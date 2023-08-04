@@ -162,7 +162,7 @@ const Completed = () => {
                                                     variant="ghost"
                                                     value='Đã giao'
                                                     color={
-                                                        status === "completed" ? "green" : status === "pending" ? "amber" : "red"
+                                                        status === "completed" ? "green" : status === "pending" ? "amber" : status === 'shipping' ? "blue" : "red"
                                                     }
                                                 />
                                             </div>

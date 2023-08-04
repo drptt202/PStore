@@ -18,7 +18,7 @@ import { OPEN_CART } from '../../reducers/types'
 const Index = () => {
     const [isLogin, setIsLogin] = useState(false)
     const [openMenu, setOpenMenu] = useState(false)
-    const { dispatch } = useContext(CartContext)
+    const { countItem, dispatch } = useContext(CartContext)
     const navigate = useNavigate()
     useEffect(() => {
         setIsLogin(sessionStorage.getItem('isLogin') !== "false")
@@ -304,7 +304,13 @@ const Index = () => {
                                             className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                                             aria-hidden="true"
                                         />
-                                        <span className="ml-2 text-sm font-medium text-red-600 group-hover:text-red-600">9+&nbsp;&nbsp;</span>
+                                        {
+                                            countItem > 9
+                                                ?
+                                                <span className="ml-2 text-sm font-medium text-red-600 group-hover:text-red-600">9+&nbsp;&nbsp;</span>
+                                                :
+                                                <span className="ml-2 text-sm font-medium text-red-600 group-hover:text-red-600">{countItem}&nbsp;&nbsp;</span>
+                                        }
                                     </a>
                                 </div>
                                 <Cart />

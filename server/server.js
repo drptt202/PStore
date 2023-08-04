@@ -8,6 +8,8 @@ const authRoute = require('./routes/authRoute')
 const productRoute = require('./routes/productRoute')
 const cartRoute = require('./routes/cartRoute')
 const adminRoute = require('./routes/adminRoute')
+const storeRoute = require('./routes/storeRoute')
+
 
 
 connectDB()
@@ -19,6 +21,7 @@ app.use('/api/v1/auth/', authRoute)
 app.use('/api/v1/product', productRoute)
 app.use('/api/v1/cart', cartRoute)
 app.use('/api/v1/admin', adminRoute)
+app.use('/api/v1/store', storeRoute)
 
 
 app.get('/', (req, res, next) => {

@@ -1,6 +1,6 @@
 const express = require('express')
 
-const { getAllCartItems, addItemToCart, deleteItemInCart, getAllType1, getAllType2, getAllType3, getAllType4, cancelOrder, checkOut, decreaseItem } = require('../controllers/cartController')
+const { getAllCartItems, addItemToCart, deleteItemInCart, getAllType1, getAllType2, getAllType3, getAllType4, cancelOrder, checkOut, decreaseItem, delivery } = require('../controllers/cartController')
 const { verifyToken } = require('../middleware/verifyToken');
 
 const Router = express.Router()
@@ -13,6 +13,10 @@ Router.route('/:itemID').put(verifyToken, decreaseItem)
 
 //Check out
 Router.route('/checkout/:itemID').post(verifyToken, checkOut)
+
+//Add to shipping list
+Router.route('/delivery/:itemID').post(verifyToken, delivery)
+
 
 //To confirm
 Router.route('/type=1').get(verifyToken, getAllType1)

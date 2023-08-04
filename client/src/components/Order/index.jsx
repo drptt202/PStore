@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import Pending from './Pending'
 import Cancelled from './Cancelled'
 import Completed from './Completed'
+import Shipping from './Shipping';
 const Index = () => {
     const navigate = useNavigate()
     const [type, setType] = useState('pending')
@@ -38,6 +39,21 @@ const Index = () => {
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3h18v18H3zM8 12h8" /></svg>
                                         <span>Chờ xác nhận</span>
+                                    </Tab>
+                                </Tab.List>
+                                <Tab.List className="rounded-sm">
+                                    <Tab
+                                        onClick={() => setType('shipping')}
+
+                                        key={'shipping'}
+                                        className={({ selected }) =>
+                                            classNames(
+                                                selected ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-900',
+                                                'flex items-center p-2 space-x-3 rounded-md'
+                                            )
+                                        }
+                                    ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 17l5-5-5-5M6 17l5-5-5-5" /></svg>
+                                        <span>Đang vận chuyển</span>
                                     </Tab>
                                 </Tab.List>
                                 <Tab.List className="rounded-sm">
@@ -107,6 +123,8 @@ const Index = () => {
                         <Completed />
                     }{type === 'cancelled' &&
                         <Cancelled />
+                    }{type === 'shipping' &&
+                        <Shipping />
                     }
                 </div>
             </div>

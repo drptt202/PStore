@@ -13,7 +13,9 @@ const productSchema = new mongoose.Schema({
     Release: { type: String, trim: true },
     Feature: { type: String, trim: true },
     Image: String,
-    Code: { type: String, trim: true, unique: true }
+    Code: { type: String, trim: true, unique: true },
+    Description: { type: String },
+    Status: { type: String }
 }, { timestamps: true })
 
 const Product = mongoose.model('Product', productSchema);

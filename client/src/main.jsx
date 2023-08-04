@@ -44,7 +44,7 @@ const router = createBrowserRouter([
       <Profile />
   },
   {
-    path: "/:loai/:ma",
+    path: "/:loai/:ten",
     element: <ProductOverview />,
   },
 ]);

@@ -1,4 +1,4 @@
-import { TrashIcon } from "@heroicons/react/24/solid";
+import { ShoppingBagIcon } from "@heroicons/react/24/solid";
 import {
     Card,
     Typography,
@@ -17,7 +17,7 @@ const TABLE_ROWS = [
         name: "Pinterest",
         amount: "$3,400",
         date: "Mon 7:40pm",
-        status: "pending",
+        status: "shipping",
         account: "master-card",
         accountNumber: "1234",
         expiry: "06/2026",
@@ -27,7 +27,7 @@ const TABLE_ROWS = [
         name: "netflix",
         amount: "$14,000",
         date: "Wed 3:30am",
-        status: "pending",
+        status: "shipping",
         account: "visa",
         accountNumber: "1234",
         expiry: "06/2026",
@@ -37,7 +37,7 @@ const TABLE_ROWS = [
         name: "netflix",
         amount: "$14,000",
         date: "Wed 3:30am",
-        status: "pending",
+        status: "shipping",
         account: "visa",
         accountNumber: "1234",
         expiry: "06/2026",
@@ -47,7 +47,7 @@ const TABLE_ROWS = [
         name: "netflix",
         amount: "$14,000",
         date: "Wed 3:30am",
-        status: "pending",
+        status: "shipping",
         account: "visa",
         accountNumber: "1234",
         expiry: "06/2026",
@@ -57,7 +57,7 @@ const TABLE_ROWS = [
         name: "netflix",
         amount: "$14,000",
         date: "Wed 3:30am",
-        status: "pending",
+        status: "shipping",
         account: "visa",
         accountNumber: "1234",
         expiry: "06/2026",
@@ -67,7 +67,7 @@ const TABLE_ROWS = [
         name: "netflix",
         amount: "$14,000",
         date: "Wed 3:30am",
-        status: "pending",
+        status: "shipping",
         account: "visa",
         accountNumber: "1234",
         expiry: "06/2026",
@@ -77,7 +77,7 @@ const TABLE_ROWS = [
         name: "netflix",
         amount: "$14,000",
         date: "Wed 3:30am",
-        status: "pending",
+        status: "shipping",
         account: "visa",
         accountNumber: "1234",
         expiry: "06/2026",
@@ -87,7 +87,7 @@ const TABLE_ROWS = [
         name: "netflix",
         amount: "$14,000",
         date: "Wed 3:30am",
-        status: "pending",
+        status: "shipping",
         account: "visa",
         accountNumber: "1234",
         expiry: "06/2026",
@@ -97,16 +97,16 @@ const TABLE_ROWS = [
         name: "netflix",
         amount: "$14,000",
         date: "Wed 3:30am",
-        status: "pending",
+        status: "shipping",
         account: "visa",
         accountNumber: "1234",
         expiry: "06/2026",
     },
 ];
 
-const Pending = () => {
+const Shipping = () => {
     return (
-        <Card className="h-full w-full ">
+        <Card className="h-full w-full">
             <CardBody className="overflow-scroll px-0 h-96">
                 <table className="w-full min-w-max table-auto text-left">
                     <thead>
@@ -160,7 +160,7 @@ const Pending = () => {
                                                 <Chip
                                                     size="sm"
                                                     variant="ghost"
-                                                    value='Chờ xác nhận'
+                                                    value='Đang vận chuyển'
                                                     color={
                                                         status === "completed" ? "green" : status === "pending" ? "amber" : status === 'shipping' ? "blue" : "red"
                                                     }
@@ -201,9 +201,9 @@ const Pending = () => {
                                             </div>
                                         </td>
                                         <td className={classes}>
-                                            <Tooltip content="Xoá">
+                                            <Tooltip content="Mua lại">
                                                 <IconButton variant="text" color="blue-gray">
-                                                    <TrashIcon className="h-4 w-4" />
+                                                    <ShoppingBagIcon className="h-4 w-4" />
                                                 </IconButton>
                                             </Tooltip>
                                         </td>
@@ -218,4 +218,4 @@ const Pending = () => {
     )
 }
 
-export default Pending
+export default Shipping

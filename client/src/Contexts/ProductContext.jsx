@@ -7,6 +7,16 @@ export const ProductContext = createContext({})
 export const ProductProvider = ({ children }) => {
     const [top5, setTop5] = useState([])
     const [selling, setSelling] = useState([])
+    const [store, setStore] = useState([])
+
+    useEffect(() => {
+        axiosCustom.get("/store/item")
+            .then((res) => {
+                setStore(res.data.data.store.ProductCode)
+            }).catch((err) => {
+                console.log(err)
+            })
+    }, [])
 
     useEffect(() => {
         axiosCustom.get("/product/top-5")
@@ -15,7 +25,9 @@ export const ProductProvider = ({ children }) => {
             }).catch((err) => {
                 console.log(err)
             })
+
     }, [])
+
     useEffect(() => {
         axiosCustom.get("/product/top-selling")
             .then((res) => {
@@ -25,7 +37,7 @@ export const ProductProvider = ({ children }) => {
             })
     }, [])
     const ProductData = {
-        top5, selling
+        top5, selling, store
     }
     return (
         <ProductContext.Provider value={ProductData}>

@@ -1,48 +1,68 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { Input, Rating } from '@material-tailwind/react'
 import Navigation from '../Navigation'
 import { useParams } from 'react-router-dom'
-import ps5 from '../../assets/img/may-ps5-gia-re-P1349-1621770999197.jpg'
+import { add1ToCart, productDetails } from './../../services/ApiService';
 
-const product = {
-    name: 'PS5 Standard Edition',
-    price: ' 14.880.000',
-    href: '#',
-    images: [
-        {
-            src: ps5,
-            alt: 'may-ps5-standard-edition',
-        },
-        {
-            src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg',
-            alt: 'Model wearing plain black basic tee.',
-        },
-        {
-            src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg',
-            alt: 'Model wearing plain gray basic tee.',
-        },
-        {
-            src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg',
-            alt: 'Model wearing plain white basic tee.',
-        },
-    ],
-    description:
-        'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
-    highlights: [
-        'Hand cut and sewn locally',
-        'Dyed with our proprietary colors',
-        'Pre-washed & pre-shrunk',
-        'Ultra-soft 100% cotton',
-    ],
-    details:
-        'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-}
+// const product = {
+//     name: 'PS5 Standard Edition',
+//     price: ' 14.880.000',
+//     href: '#',
+//     images: [
+//         {
+//             src: ps5,
+//             alt: 'may-ps5-standard-edition',
+//         },
+//         {
+//             src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg',
+//             alt: 'Model wearing plain black basic tee.',
+//         },
+//         {
+//             src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg',
+//             alt: 'Model wearing plain gray basic tee.',
+//         },
+//         {
+//             src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg',
+//             alt: 'Model wearing plain white basic tee.',
+//         },
+//     ],
+//     description:
+//         'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
+//     highlights: [
+//         'Hand cut and sewn locally',
+//         'Dyed with our proprietary colors',
+//         'Pre-washed & pre-shrunk',
+//         'Ultra-soft 100% cotton',
+//     ],
+//     details:
+//         'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
+// }
 const reviews = { href: '#', average: 4, totalCount: 117 }
 
 const Index = () => {
-    const { loai, ma } = useParams()
+    const { loai, ten } = useParams()
     const [disabled, setDisabled] = useState(false);
+    const [product, setProduct] = useState([])
+    const [time, setTime] = useState(1)
+
+    useEffect(() => {
+        productDetails(loai, ten)
+            .then(res => {
+                setProduct(res.data.data.product[0])
+            }).catch(err => console.log(err))
+    }, [])
+
+    const addToCart = (ma) => {
+        let i = 1;
+        while (i <= time) {
+            add1ToCart(ma)
+                .then(() => {
+                    openToast()
+                }).catch(err => console.log(err))
+            i++;
+        }
+    }
 
     const onClick = () => {
         setDisabled(true);
@@ -89,7 +109,7 @@ const Index = () => {
                             </li>
                             <li className="text-sm">
                                 <a aria-current="page" className="font-medium text-gray-500 hover:text-gray-600">
-                                    {ma}
+                                    {ten}
                                 </a>
                             </li>
                         </ol>
@@ -99,9 +119,9 @@ const Index = () => {
                     <div className="mx-auto mt-6 max-w-sm">
                         <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
                             <img
-                                src={product.images[0].src}
-                                alt={product.images[0].alt}
-                                className="h-full w-full object-cover object-center"
+                                src={product.Image}
+                                alt={product.Name}
+                                className="h-full w-full object-none"
                             />
                         </div>
                     </div>
@@ -109,13 +129,13 @@ const Index = () => {
                     {/* Product info */}
                     <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
                         <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-                            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{product.name}</h1>
+                            <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{product.Name}</h1>
                         </div>
 
                         {/* Options */}
                         <div className="mt-4 lg:row-span-3 lg:mt-0">
                             <h3 className="text-sm font-medium text-gray-900">Giá niêm yết</h3>
-                            <p className="text-3xl tracking-tight text-gray-900">{product.price}</p>
+                            <p className="text-3xl tracking-tight text-gray-900">{product.Price}</p>
 
                             {/* Reviews */}
                             <div className="mt-6">
@@ -133,8 +153,7 @@ const Index = () => {
                                 {/* Trạng thái */}
                                 <div>
                                     <h3 className="text-sm font-medium text-gray-900">Trạng thái</h3>
-
-                                    <p className="text-3xl tracking-tight text-green-900">Còn hàng</p>
+                                    <p className="text-3xl tracking-tight text-green-900">{product.Status}</p>
                                 </div>
 
                                 {/* Số lượng */}
@@ -142,10 +161,10 @@ const Index = () => {
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-sm font-medium text-gray-900">Số lượng</h3>
                                     </div>
-                                    <Input type={'number'} />
+                                    <Input type={'number'} value={time} onChange={e => { setTime(e.target.value) }} />
                                 </div>
                                 <div className='flex justify-between'>
-                                    <button disabled={disabled} onClick={() => { openToast(); onClick() }}
+                                    <button disabled={disabled} onClick={() => { onClick(); addToCart(product.Code); }}
                                         // type="submit"
                                         className="cursor-pointer mr-1 mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                                     >
@@ -161,7 +180,7 @@ const Index = () => {
                             <div>
 
                                 <div className="space-y-6">
-                                    <p className="text-base text-gray-900">{product.description}</p>
+                                    <p className="text-base text-gray-900">{product.Decription}</p>
                                 </div>
                             </div>
 
@@ -169,12 +188,33 @@ const Index = () => {
                                 <h3 className="text-lg font-bold text-gray-900">Thông số kỹ thuật</h3>
 
                                 <div className="mt-4">
-                                    <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
-                                        {product.highlights.map((highlight) => (
-                                            <li key={highlight} className="text-gray-400">
-                                                <span className="text-gray-600">{highlight}</span>
+                                    <ul role="list" className="space-y-2 pl-4 text-sm list-none">
+                                        {product.Code &&
+                                            <li className="text-gray-400">
+                                                <span className="text-gray-600">Mã sản phẩm: {product.Code}</span>
                                             </li>
-                                        ))}
+                                        }
+                                        {product.CPU &&
+                                            <li className="text-gray-400">
+                                                <span className="text-gray-600">CPU: {product.CPU}</span>
+                                            </li>
+                                        }
+                                        {product.RAM &&
+                                            <li className="text-gray-400">
+                                                <span className="text-gray-600">RAM: {product.RAM}</span>
+                                            </li>
+                                        }
+                                        {product.DISK &&
+                                            <li className="text-gray-400">
+                                                <span className="text-gray-600">Bộ nhớ: {product.DISK}</span>
+                                            </li>
+                                        }
+                                        {product.Release &&
+                                            <li className="text-gray-400">
+                                                <span className="text-gray-600">Phát hành: {product.Release}</span>
+                                            </li>
+                                        }
+
                                     </ul>
                                 </div>
                             </div>
