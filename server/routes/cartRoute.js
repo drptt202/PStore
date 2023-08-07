@@ -17,7 +17,6 @@ Router.route('/checkout/:itemID').post(verifyToken, checkOut)
 //Add to shipping list
 Router.route('/delivery/:itemID').post(verifyToken, delivery)
 
-
 //To confirm
 Router.route('/type=1').get(verifyToken, getAllType1)
 
@@ -32,6 +31,5 @@ Router.route('/type=3').get(verifyToken, getAllType3)
 
 //Cancelled
 Router.route('/type=4').get(verifyToken, getAllType4)
-
 
 module.exports = Router

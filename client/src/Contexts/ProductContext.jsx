@@ -21,17 +21,16 @@ export const ProductProvider = ({ children }) => {
     useEffect(() => {
         axiosCustom.get("/product/top-5")
             .then((res) => {
-                setTop5(res.data.data.product)
+                setTop5(res.data.data.products)
             }).catch((err) => {
                 console.log(err)
             })
-
     }, [])
 
     useEffect(() => {
         axiosCustom.get("/product/top-selling")
             .then((res) => {
-                setSelling(res.data.data.product)
+                setSelling(res.data.data.products)
             }).catch((err) => {
                 console.log(err)
             })

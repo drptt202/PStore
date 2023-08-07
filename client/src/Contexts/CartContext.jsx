@@ -11,6 +11,7 @@ export const CartProvider = ({ children }) => {
     const [countItem, setCountItem] = useState()
     const [numOfI, setNumOfI] = useState([])
     const [total, setTotal] = useState(0)
+    const [allItems, setAllItems] = useState([])
 
     useEffect(() => {
         axiosCustom.get('/cart')
@@ -18,12 +19,15 @@ export const CartProvider = ({ children }) => {
                 setCartData(res.data.data.carts)
                 setNumOfI(res.data.data.count)
                 setCountItem(res.data.data.result.length)
+                setAllItems(res.data.data.result)
+
                 setTotal(res.data.data.result.reduce((acc, val) => acc + val.Price, 0))
             })
             .catch(err => console.log(err))
     }, [])
 
     const CartContextData = {
+        allItems,
         total,
         numOfI,
         countItem,

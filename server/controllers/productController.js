@@ -52,16 +52,12 @@ exports.getProductDetails = async (req, res, next) => {
     }
 }
 
-exports.upload = async (req, res, next) => {
-
-}
-
 exports.getTop5 = async (req, res, next) => {
     try {
-        const product = await Product.aggregate([{ $sample: { size: 5 } }]);
+        const products = await Product.aggregate([{ $sample: { size: 5 } }]);
         res.status(200).json({
             status: 'success',
-            data: { product }
+            data: { products }
         })
     } catch (error) {
         res.json(error)
@@ -70,10 +66,36 @@ exports.getTop5 = async (req, res, next) => {
 
 exports.getSelling = async (req, res, next) => {
     try {
-        const product = await Product.aggregate([{ $sample: { size: 5 } }]);
+        const products = await Product.aggregate([{ $sample: { size: 5 } }]);
         res.status(200).json({
             status: 'success',
-            data: { product }
+            data: { products }
+        })
+    } catch (error) {
+        res.json(error)
+    }
+}
+
+exports.searchTop5 = async (req, res, next) => {
+    try {
+        const { keyword } = req.params
+        const products = await Product.find({ Name: new RegExp(keyword, "i") }).limit(5);
+        res.status(200).json({
+            status: 'success',
+            data: { products }
+        })
+    } catch (error) {
+        res.json(error)
+    }
+}
+
+exports.searchbyKeyword = async (req, res, next) => {
+    try {
+        const { keyword } = req.params
+        const products = await Product.find({ Name: new RegExp(keyword, "i") });
+        res.status(200).json({
+            status: 'success',
+            data: { products }
         })
     } catch (error) {
         res.json(error)

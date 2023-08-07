@@ -1,6 +1,6 @@
 import { Fragment, useContext, useState, useEffect } from 'react'
 import { Menu, Dialog, Popover, Tab, Transition } from '@headlessui/react'
-import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import classNames from 'classnames'
 import Cart from '../Cart'
 import logo from '../../assets/img/android-chrome-192x192.png'
@@ -9,11 +9,9 @@ import { categories } from './fakeCategories'
 import {
     Link, useNavigate
 } from "react-router-dom"
-import {
-    Input,
-} from "@material-tailwind/react";
 import { CartContext } from '../../Contexts/CartContext'
 import { OPEN_CART } from '../../reducers/types'
+import Search from './Search'
 
 const Index = () => {
     const [isLogin, setIsLogin] = useState(false)
@@ -290,11 +288,7 @@ const Index = () => {
                             <div className="ml-auto flex items-center">
 
                                 {/* Search */}
-                                <div className="flex lg:ml-0 lg:mr-4 lg:mt-0.5">
-                                    <div className="w-full md:w-72">
-                                        <Input placeholder="Search" icon={<MagnifyingGlassIcon className="h-5 w-5" />} />
-                                    </div>
-                                </div>
+                                <Search />
 
                                 {/* Cart */}
                                 <div className="ml-4 flow-root lg:ml-6"
@@ -352,7 +346,7 @@ const Index = () => {
                                                     <Menu.Item>
                                                         {({ active }) => (
                                                             <a
-                                                                href="/don-hang"
+                                                                href="/don-hang?Type=1"
                                                                 className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                             >
                                                                 Đơn hàng

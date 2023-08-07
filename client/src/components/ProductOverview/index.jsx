@@ -1,50 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { Input, Rating } from '@material-tailwind/react'
 import Navigation from '../Navigation'
 import { useParams } from 'react-router-dom'
 import { add1ToCart, productDetails } from './../../services/ApiService';
-
-// const product = {
-//     name: 'PS5 Standard Edition',
-//     price: ' 14.880.000',
-//     href: '#',
-//     images: [
-//         {
-//             src: ps5,
-//             alt: 'may-ps5-standard-edition',
-//         },
-//         {
-//             src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg',
-//             alt: 'Model wearing plain black basic tee.',
-//         },
-//         {
-//             src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg',
-//             alt: 'Model wearing plain gray basic tee.',
-//         },
-//         {
-//             src: 'https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg',
-//             alt: 'Model wearing plain white basic tee.',
-//         },
-//     ],
-//     description:
-//         'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
-//     highlights: [
-//         'Hand cut and sewn locally',
-//         'Dyed with our proprietary colors',
-//         'Pre-washed & pre-shrunk',
-//         'Ultra-soft 100% cotton',
-//     ],
-//     details:
-//         'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-// }
+import { ProductContext } from '../../Contexts/ProductContext'
 const reviews = { href: '#', average: 4, totalCount: 117 }
 
 const Index = () => {
     const { loai, ten } = useParams()
     const [disabled, setDisabled] = useState(false);
+    const { store } = useContext(ProductContext)
     const [product, setProduct] = useState([])
     const [time, setTime] = useState(1)
+
 
     useEffect(() => {
         productDetails(loai, ten)
@@ -117,11 +86,11 @@ const Index = () => {
 
                     {/* Image gallery */}
                     <div className="mx-auto mt-6 max-w-sm">
-                        <div className="aspect-h-4 aspect-w-3 hidden overflow-hidden rounded-lg lg:block">
+                        <div className="aspect-h-4 hidden overflow-hidden rounded-lg lg:block">
                             <img
                                 src={product.Image}
                                 alt={product.Name}
-                                className="h-full w-full object-none"
+                                className="h-full w-full object-cover"
                             />
                         </div>
                     </div>
@@ -153,7 +122,7 @@ const Index = () => {
                                 {/* Trạng thái */}
                                 <div>
                                     <h3 className="text-sm font-medium text-gray-900">Trạng thái</h3>
-                                    <p className="text-3xl tracking-tight text-green-900">{product.Status}</p>
+                                    <p className="text-3xl tracking-tight text-green-900">{store[product.Code] > 0 ? "Còn hàng" : "Tạm hết"}</p>
                                 </div>
 
                                 {/* Số lượng */}

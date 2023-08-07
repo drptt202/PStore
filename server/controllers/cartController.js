@@ -92,13 +92,12 @@ exports.checkOut = async function (req, res, next) {
 
         await Cart.updateOne({ $and: [{ Username: Username }, { Status: "To confirm" }] }, {
             $push: {
-                CartItems: req.params.itemID,
-            },
+                CartItems: req.params.itemID
+            }
         })
-        await Cart.updateOne({ $and: [{ Username: Username }, { Status: "Shopping Cart" }] }, {
-            $pull: {
-                CartItems: req.params.itemID,
-            },
+
+        await Cart.findOneAndUpdate({ $and: [{ Username: Username }, { Status: "Shopping Cart" }] }, {
+            CartItems: []
         })
         const carts = await Cart.find({ $and: [{ Username: Username }, { Status: "To confirm" }] })
         res.status(200).json({
@@ -141,7 +140,6 @@ exports.delivery = async function (req, res, next) {
         res.json(err)
     }
 }
-
 
 exports.getAllType1 = async function (req, res, next) {
     const { Username } = req

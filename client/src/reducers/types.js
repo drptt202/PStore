@@ -1,7 +1,3 @@
 export const OPEN_CART = 'OPEN_CART'
-export const CHANGE_PASSWORD = 'CHANGE_PASSWORD'
-export const UPDATE_PROFILE = 'UPDATE_PROFILE'
 
-export const GET_BY_CATOGERY = 'GET_BY_CATOGERY'
-export const GET_BY_BRAND = 'GET_BY_BRAND'
-export const GET_BY_NAME = 'GET_BY_NAME'
+export const RECOMMEND_SEARCH = 'RECOMMEND_SEARCH'

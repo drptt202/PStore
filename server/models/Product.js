@@ -14,8 +14,7 @@ const productSchema = new mongoose.Schema({
     Feature: { type: String, trim: true },
     Image: String,
     Code: { type: String, trim: true, unique: true },
-    Description: { type: String },
-    Status: { type: String }
+    Description: { type: String }
 }, { timestamps: true })
 
 const Product = mongoose.model('Product', productSchema);

@@ -1,20 +1,13 @@
-import { useState } from 'react'
 import Navigation from '../Navigation'
 import { Tab } from '@headlessui/react'
 import classNames from 'classnames'
-import { useNavigate } from 'react-router-dom'
-import Pending from './Pending'
-import Cancelled from './Cancelled'
-import Completed from './Completed'
-import Shipping from './Shipping';
+import { useSearchParams } from 'react-router-dom'
+import RenderItem from './RenderItem'
 const Index = () => {
-    const navigate = useNavigate()
-    const [type, setType] = useState('pending')
-    const toLogout = () => {
-        sessionStorage.setItem('isLogin', false)
-        localStorage.clear()
-        navigate('/')
-    }
+    const [searchParams, setSearchParams] = useSearchParams()
+    // eslint-disable-next-line no-unused-vars
+    // const [query, setQuery] = useState(searchParams.get('Type'))
+    const query = searchParams.get('Type')
     return (
         <>
             <Navigation />
@@ -28,11 +21,11 @@ const Index = () => {
                             <Tab.Group as='div' className="pt-2 pb-4 space-y-1 text-sm">
                                 <Tab.List className="rounded-sm">
                                     <Tab
-                                        onClick={() => setType('pending')}
-                                        key={'pending'}
-                                        className={({ selected }) =>
+                                        onClick={() => { setSearchParams('?Type=1') }}
+                                        key={1}
+                                        className={() =>
                                             classNames(
-                                                selected ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-900',
+                                                query == 1 ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-900',
                                                 'flex items-center p-2 space-x-3 rounded-md'
                                             )
                                         }
@@ -43,12 +36,12 @@ const Index = () => {
                                 </Tab.List>
                                 <Tab.List className="rounded-sm">
                                     <Tab
-                                        onClick={() => setType('shipping')}
+                                        onClick={() => { setSearchParams('?Type=2') }}
 
-                                        key={'shipping'}
-                                        className={({ selected }) =>
+                                        key={2}
+                                        className={() =>
                                             classNames(
-                                                selected ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-900',
+                                                query == 2 ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-900',
                                                 'flex items-center p-2 space-x-3 rounded-md'
                                             )
                                         }
@@ -58,12 +51,12 @@ const Index = () => {
                                 </Tab.List>
                                 <Tab.List className="rounded-sm">
                                     <Tab
-                                        onClick={() => setType('completed')}
+                                        onClick={() => { setSearchParams('?Type=3') }}
 
-                                        key={'completed'}
-                                        className={({ selected }) =>
+                                        key={3}
+                                        className={() =>
                                             classNames(
-                                                selected ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-900',
+                                                query == 3 ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-900',
                                                 'flex items-center p-2 space-x-3 rounded-md'
                                             )
                                         }
@@ -74,12 +67,12 @@ const Index = () => {
                                 </Tab.List>
                                 <Tab.List className="rounded-sm">
                                     <Tab
-                                        onClick={() => setType('cancelled')}
+                                        onClick={() => { setSearchParams('?Type=4') }}
 
-                                        key={'cancelled'}
-                                        className={({ selected }) =>
+                                        key={4}
+                                        className={() =>
                                             classNames(
-                                                selected ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-900',
+                                                query == 4 ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-900',
                                                 'flex items-center p-2 space-x-3 rounded-md'
                                             )
                                         }
@@ -88,44 +81,13 @@ const Index = () => {
                                         <span>Đã huỷ</span>
                                     </Tab>
                                 </Tab.List>
-                                <Tab.List className="rounded-sm">
-                                    <Tab
-                                        onClick={toLogout}
-                                        href="/"
-                                        className="flex items-center p-2 space-x-3 rounded-md"
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            className="w-6 h-6"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                            strokeWidth={2}
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
-                                            />
-                                        </svg>
-                                        <span>Đăng xuất</span>
-                                    </Tab>
-                                </Tab.List>
                             </Tab.Group>
                         </div>
                     </div>
                 </div>
 
                 <div className="container mx-auto mt-12">
-                    {type === 'pending' &&
-                        <Pending />
-                    }{type === 'completed' &&
-                        <Completed />
-                    }{type === 'cancelled' &&
-                        <Cancelled />
-                    }{type === 'shipping' &&
-                        <Shipping />
-                    }
+                    <RenderItem type={`type=${query}`} />
                 </div>
             </div>
         </>

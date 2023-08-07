@@ -24,9 +24,14 @@ const Login = () => {
             Password: password,
         }).then((res) => {
             localStorage.setItem('accessToken', res.data.data.token)
+            localStorage.setItem('Role', res.data.data.Role)
             sessionStorage.setItem('isLogin', true)
             toast.success('Đăng nhập thành công')
-            navigate('/')
+            if (res.data.data.Role == 'User') {
+                navigate('/')
+            } else {
+                navigate('/admin/site/nhan-vien')
+            }
         }).catch((err) => {
             console.log(err)
         })

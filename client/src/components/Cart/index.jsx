@@ -4,10 +4,11 @@ import { XMarkIcon, PlusIcon, MinusIcon } from '@heroicons/react/24/outline'
 import { CartContext } from '../../Contexts/CartContext'
 import { OPEN_CART } from '../../reducers/types'
 import empty from '../../assets/img/empty-cart.png'
-import { add1ToCart, delete1 } from '../../services/ApiService'
+import { add1ToCart, checkout, delete1 } from '../../services/ApiService'
+import { toast } from 'react-hot-toast';
 
 const Index = () => {
-    const { total, numOfI, cartData, open, dispatch } = useContext(CartContext)
+    const { allItems, total, numOfI, cartData, open, dispatch } = useContext(CartContext)
     const addToCart = (ma) => {
         add1ToCart(ma)
             .then(() => {
@@ -17,6 +18,14 @@ const Index = () => {
         delete1(ma)
             .then(() => {
             }).catch(err => console.log(err))
+    }
+    const checkOut = () => {
+        try {
+            for (let i = 0; i < allItems.length; i++) {
+                checkout(allItems[i].Code)
+            }
+            toast.success("Đặt hàng thành công")
+        } catch (err) { console.log(err) }
     }
     return (
         <Transition.Root show={open} as={Fragment}>
@@ -135,7 +144,8 @@ const Index = () => {
                                             </div>
                                             <div className="mt-6">
                                                 <a
-                                                    href="#"
+                                                    onClick={checkOut}
+                                                    href="/don-hang?Type=1"
                                                     className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                                                 >
                                                     Thanh toán
