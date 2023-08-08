@@ -22,7 +22,7 @@ const Index = () => {
     const checkOut = () => {
         try {
             for (let i = 0; i < allItems.length; i++) {
-                checkout(allItems[i].Code)
+                checkout(allItems[i].Item.Code)
             }
             toast.success("Đặt hàng thành công")
         } catch (err) { console.log(err) }
@@ -81,8 +81,8 @@ const Index = () => {
                                                                 <li key={index} className="flex py-6">
                                                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                                                         <img
-                                                                            src={item.Image}
-                                                                            alt={item.Name}
+                                                                            src={item.Item.Image}
+                                                                            alt={item.Item.Name}
                                                                             className="h-full w-full object-cover object-center"
                                                                         />
                                                                     </div>
@@ -91,17 +91,17 @@ const Index = () => {
                                                                         <div>
                                                                             <div className="flex justify-between text-base font-medium text-gray-900">
                                                                                 <h3>
-                                                                                    <a href={item.Category}>{item.Name}</a>
+                                                                                    <a href={item.Item.Category}>{item.Item.Name}</a>
                                                                                 </h3>
-                                                                                <p className="ml-4">{item.Price}</p>
+                                                                                <p className="ml-4">{item.Item.Price}</p>
                                                                             </div>
-                                                                            <p className="mt-1 text-sm text-gray-500">{item.Brand}</p>
+                                                                            <p className="mt-1 text-sm text-gray-500">{item.Item.Brand}</p>
                                                                         </div>
                                                                         <div className="flex flex-1 items-end justify-between text-sm">
 
                                                                             <div className="flex">
                                                                                 <button
-                                                                                    onClick={() => addToCart(item.Code)}
+                                                                                    onClick={() => addToCart(item.Item.Code)}
                                                                                     type="button"
                                                                                     className="font-medium text-indigo-600 hover:text-indigo-500"
                                                                                 >
@@ -109,10 +109,10 @@ const Index = () => {
 
                                                                                 </button>
                                                                                 <form>
-                                                                                    <input type="text" className="h-6 w-14" maxLength="3" value={numOfI[item.Code]} />
+                                                                                    <input type="text" className="h-6 w-14" maxLength="3" value={numOfI[item.Item.Code]} />
                                                                                 </form>
                                                                                 <button
-                                                                                    onClick={() => deleteFromCart(item.Code)}
+                                                                                    onClick={() => deleteFromCart(item.Item.Code)}
                                                                                     type="button"
                                                                                     className="font-medium text-indigo-600 hover:text-indigo-500"
                                                                                 >

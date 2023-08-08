@@ -19,8 +19,11 @@ const Index = () => {
         productDetails(loai, ten)
             .then(res => {
                 setProduct(res.data.data.product[0])
+                if (store[product.Code] < 1) {
+                    setDisabled(true)
+                }
             }).catch(err => console.log(err))
-    }, [])
+    }, [store, loai, ten])
 
     const addToCart = (ma) => {
         let i = 1;

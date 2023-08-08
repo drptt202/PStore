@@ -21,7 +21,7 @@ export const CartProvider = ({ children }) => {
                 setCountItem(res.data.data.result.length)
                 setAllItems(res.data.data.result)
 
-                setTotal(res.data.data.result.reduce((acc, val) => acc + val.Price, 0))
+                setTotal(res.data.data.result.reduce((acc, val) => acc + val.Item.Price, 0))
             })
             .catch(err => console.log(err))
     }, [])

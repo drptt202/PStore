@@ -1,12 +1,15 @@
-import { ShoppingBagIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, MagnifyingGlassIcon, ShoppingBagIcon, TrashIcon } from "@heroicons/react/24/outline";
 import {
     Card,
+    CardHeader,
     Typography,
+    Button,
     CardBody,
     Chip,
     Avatar,
     IconButton,
-    Tooltip
+    Tooltip,
+    Input,
 } from "@material-tailwind/react";
 import { useEffect, useReducer, useState } from "react";
 import { add1ToCart, deleteType, getOrder } from "../../services/ApiService";
@@ -14,7 +17,7 @@ import { toast } from "react-hot-toast";
 
 const TABLE_HEAD = ["Sản phẩm", "Giá", "Số lượng", "Ngày đặt", "Trạng thái", "Thanh toán", "Tổng cộng", ""];
 
-const RenderItem = (props) => {
+const OrderRender = (props) => {
     // eslint-disable-next-line no-unused-vars
     const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     // eslint-disable-next-line react/prop-types
@@ -60,7 +63,7 @@ const RenderItem = (props) => {
     const deleteOrder = (Code) => {
         try {
             for (let i = 0; i < allItems.length; i++) {
-                if (allItems[i].Item.Code === Code) {
+                if (allItems[i].Code === Code) {
                     deleteType(Code)
                 }
             }
@@ -79,6 +82,20 @@ const RenderItem = (props) => {
     }
     return (
         <Card className="h-full w-full">
+            <CardHeader floated={false} shadow={false} className="rounded-none">
+                <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
+                    <div>
+                    </div>
+                    <div className="flex w-full shrink-0 gap-2 md:w-max">
+                        <div className="w-full md:w-72">
+                            <Input label="Search" icon={<MagnifyingGlassIcon className="h-5 w-5" />} />
+                        </div>
+                        <Button className="flex items-center gap-3" color="blue" size="sm">
+                            <PencilIcon strokeWidth={2} className="h-4 w-4" /> Chỉnh sửa
+                        </Button>
+                    </div>
+                </div>
+            </CardHeader>
             <CardBody className="overflow-scroll px-0 h-96">
                 <table className="w-full min-w-max table-auto text-left">
                     <thead>
@@ -103,33 +120,33 @@ const RenderItem = (props) => {
                                 const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
 
                                 return (
-                                    <tr key={item.Item.Code}>
+                                    <tr key={item.Code}>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
                                                 <Avatar
-                                                    src={item.Item.Image}
-                                                    alt={item.Item.Name}
+                                                    src={item.Image}
+                                                    alt={item.Name}
                                                     size="md"
                                                     className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
                                                 />
                                                 <Typography variant="small" color="blue-gray" className="font-bold">
-                                                    {item.Item.Name}
+                                                    {item.Name}
                                                 </Typography>
                                             </div>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {item.Item.Price} đ
+                                                {item.Price} đ
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {num[item.Item.Code]}
+                                                {num[item.Code]}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {item.Date}
+                                                ----------
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -159,7 +176,7 @@ const RenderItem = (props) => {
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {num[item.Item.Code] * item.Item.Price} đ
+                                                {num[item.Code] * item.Price} đ
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -167,12 +184,12 @@ const RenderItem = (props) => {
                                                 type === "type=1"
                                                     ?
                                                     <Tooltip>
-                                                        <IconButton variant="text" color="blue-gray" disabled={disabled} content="Huỷ" onClick={() => { deleteOrder(item.Item.Code); onClick() }}>
+                                                        <IconButton variant="text" color="blue-gray" disabled={disabled} content="Huỷ" onClick={() => { deleteOrder(item.Code); onClick() }}>
                                                             <TrashIcon className="h-4 w-4" />
                                                         </IconButton>
                                                     </Tooltip>
                                                     : <Tooltip>
-                                                        <IconButton variant="text" color="blue-gray" disabled={disabled} content="Mua lại" onClick={() => { addToCart(item.Item.Code); onClick() }} >
+                                                        <IconButton variant="text" color="blue-gray" disabled={disabled} content="Mua lại" onClick={() => { addToCart(item.Code); onClick() }} >
                                                             <ShoppingBagIcon className="h-4 w-4" />
                                                         </IconButton>
                                                     </Tooltip>
@@ -191,4 +208,4 @@ const RenderItem = (props) => {
     )
 }
 
-export default RenderItem
+export default OrderRender

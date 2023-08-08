@@ -1,6 +1,18 @@
 const Product = require('../models/Product');
 const Store = require('../models/Store');
 
+exports.getAllProduct = async (req, res, next) => {
+    try {
+        const products = await Product.find({});
+        res.status(200).json({
+            status: 'success',
+            data: { products }
+        })
+    } catch (error) {
+        res.json(error);
+    }
+}
+
 exports.getAllbyCategory = async (req, res, next) => {
     try {
         const { category } = req.params

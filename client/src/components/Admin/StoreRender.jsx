@@ -1,4 +1,4 @@
-import { PencilIcon, MagnifyingGlassIcon, ShoppingBagIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, MagnifyingGlassIcon, ShoppingBagIcon } from "@heroicons/react/24/outline";
 import {
     Card,
     CardHeader,
@@ -10,40 +10,29 @@ import {
     IconButton,
     Tooltip,
     Input,
+    Menu,
+    MenuHandler,
+    MenuList,
+    MenuItem,
 } from "@material-tailwind/react";
-import { useEffect, useReducer, useState } from "react";
-import { add1ToCart, deleteType, getOrder } from "../../services/ApiService";
-import { toast } from "react-hot-toast";
+import { useContext, useEffect, useReducer, useState } from "react";
+import { ProductContext } from "../../Contexts/ProductContext";
 
-const TABLE_HEAD = ["Sản phẩm", "Giá", "Số lượng", "Ngày đặt", "Trạng thái", "Thanh toán", "Tổng cộng", ""];
 
-const RenderItem = (props) => {
+const StoreRender = (props) => {
     // eslint-disable-next-line no-unused-vars
     const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     // eslint-disable-next-line react/prop-types
     const { type } = props
-    const [data, setData] = useState([])
-    const [allItems, setAllItems] = useState([])
 
-    const [num, setNum] = useState({})
+    // const TABLE_HEAD = type === "type=3"
+    //     ? ["Email", "Họ", "Tên", "Ngày sinh", "Số điện thoại", "Chức vụ", ""]
+    //     : ["Hãng", "Loại", "Tên", "Giá", type === "type=1" ? "Trạng thái" : "Số lượng", "Mã sản phẩm", "Ảnh", ""]
+    const TABLE_HEAD = ["Hãng", "Loại", "Tên", "Giá", type === "type=1" ? "Trạng thái" : "Số lượng", "Mã sản phẩm", "Ảnh", "Cập nhật"]
+
+    const { products, store } = useContext(ProductContext)
     const [disabled, setDisabled] = useState(false);
 
-
-    const addToCart = (Code) => {
-        add1ToCart(Code)
-            .then(() => {
-                toast('Đã thêm vào giỏ hàng', {
-                    duration: 2000,
-                    position: 'top-center',
-                    className: 'bg-amber-700 w-80',
-                    icon: '✅',
-                    ariaProps: {
-                        role: 'status',
-                        'aria-live': 'polite',
-                    },
-                });
-            }).catch(err => console.log(err))
-    }
 
     const onClick = () => {
         setDisabled(true);
@@ -53,33 +42,7 @@ const RenderItem = (props) => {
     };
 
     useEffect(() => {
-        getOrder(type)
-            .then(res => {
-                setData(res.data.data.carts)
-                setNum(res.data.data.count)
-                setAllItems(res.data.data.result)
-            })
     }, [ignored, type])
-    const deleteOrder = (Code) => {
-        try {
-            for (let i = 0; i < allItems.length; i++) {
-                if (allItems[i].Code === Code) {
-                    deleteType(Code)
-                }
-            }
-            toast('Huỷ đơn hàng thành công', {
-                duration: 2000,
-                position: 'top-center',
-                className: 'bg-amber-700 w-80',
-                icon: '✅',
-                ariaProps: {
-                    role: 'status',
-                    'aria-live': 'polite',
-                }
-            })
-        } catch (err) { console.log(err) }
-
-    }
     return (
         <Card className="h-full w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -114,52 +77,28 @@ const RenderItem = (props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map(
+                        {products.map(
                             (item, index) => {
-                                const isLast = index === data.length - 1;
+                                const isLast = index === products.length - 1;
                                 const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
 
                                 return (
                                     <tr key={item.Code}>
-                                        <td className={classes}>
-                                            <div className="flex items-center gap-3">
-                                                <Avatar
-                                                    src={item.Image}
-                                                    alt={item.Name}
-                                                    size="md"
-                                                    className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
-                                                />
-                                                <Typography variant="small" color="blue-gray" className="font-bold">
-                                                    {item.Name}
-                                                </Typography>
-                                            </div>
-                                        </td>
+
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {item.Price} đ
+                                                {item.Brand}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {num[item.Code]}
+                                                {item.Category}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-normal">
-                                                ----------
+                                                {item.Name}
                                             </Typography>
-                                        </td>
-                                        <td className={classes}>
-                                            <div className="w-max">
-                                                <Chip
-                                                    size="sm"
-                                                    variant="ghost"
-                                                    value={type === "type=3" ? "Đã giao" : type === "type=1" ? "Chờ xác nhận" : type === 'type=2' ? "Đang giao hàng" : "Đã huỷ"}
-                                                    color={
-                                                        type === "type=3" ? "green" : type === "type=1" ? "amber" : type === 'type=2' ? "blue" : "red"
-                                                    }
-                                                />
-                                            </div>
                                         </td>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
@@ -169,27 +108,60 @@ const RenderItem = (props) => {
                                                         color="blue-gray"
                                                         className="font-normal capitalize"
                                                     >
-                                                        Khi nhận hàng
+                                                        {item.Price}
+
                                                     </Typography>
                                                 </div>
                                             </div>
                                         </td>
                                         <td className={classes}>
+                                            <div className="w-max">
+                                                <Chip
+                                                    size="sm"
+                                                    variant="ghost"
+                                                    value={store[item.Code] > 0 ? "Còn hàng" : "Hết hàng"}
+                                                    color={
+                                                        store[item.Code] > 0 ? "green" : "amber"
+                                                    }
+                                                />
+                                            </div>
+                                        </td>
+
+                                        <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {num[item.Code] * item.Price} đ
+                                                {item.Code}
                                             </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <div className="flex items-center gap-3">
+                                                <Avatar
+                                                    src={item.Image}
+                                                    alt={item.Name}
+                                                    size="md"
+                                                    className="border border-blue-gray-50 bg-blue-gray-50/50 object-contain p-1"
+                                                />
+                                                <Button className="flex items-center gap-3" color="blue" size="sm">
+                                                    <PencilIcon strokeWidth={2} className="h-3 w-3" /> Ảnh
+                                                </Button>
+                                            </div>
                                         </td>
                                         <td className={classes}>
                                             {
                                                 type === "type=1"
                                                     ?
                                                     <Tooltip>
-                                                        <IconButton variant="text" color="blue-gray" disabled={disabled} content="Huỷ" onClick={() => { deleteOrder(item.Code); onClick() }}>
-                                                            <TrashIcon className="h-4 w-4" />
-                                                        </IconButton>
+                                                        <Menu>
+                                                            <MenuHandler>
+                                                                <PencilIcon className="h-4 w-4 cursor-pointer" />
+                                                            </MenuHandler>
+                                                            <MenuList>
+                                                                <MenuItem>Còn hàng</MenuItem>
+                                                                <MenuItem>Hết hàng</MenuItem>
+                                                            </MenuList>
+                                                        </Menu>
                                                     </Tooltip>
                                                     : <Tooltip>
-                                                        <IconButton variant="text" color="blue-gray" disabled={disabled} content="Mua lại" onClick={() => { addToCart(item.Code); onClick() }} >
+                                                        <IconButton variant="text" color="blue-gray" disabled={disabled} content="Mua lại" onClick={() => { onClick() }} >
                                                             <ShoppingBagIcon className="h-4 w-4" />
                                                         </IconButton>
                                                     </Tooltip>
@@ -208,4 +180,4 @@ const RenderItem = (props) => {
     )
 }
 
-export default RenderItem
+export default StoreRender

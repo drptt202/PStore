@@ -1,8 +1,11 @@
 const express = require('express')
 const { register, password, profile, editProfile } = require('../controllers/adminController')
+const { getAllProduct } = require('../controllers/productController');
 const { verifyToken } = require('../middleware/verifyToken');
 
 const Router = express.Router()
+
+Router.route('/product').get(getAllProduct)
 
 Router.route('/register').post(register)
 
