@@ -3,10 +3,18 @@ import classNames from 'classnames'
 import { useSearchParams } from 'react-router-dom'
 import StoreRender from './StoreRender'
 import OrderRender from './OrderRender'
+import { useContext } from 'react'
+import { ProductContext } from '../../Contexts/ProductContext'
+import { TABLE_HEAD1, TABLE_HEAD2, TABLE_HEAD3 } from './table_head'
+import { ProfileContext } from '../../Contexts/ProfileContext'
+import EmployeesRender from './EmployeesRender'
 const Index = () => {
     const [searchParams, setSearchParams] = useSearchParams()
+    const { products } = useContext(ProductContext)
+    const { employees } = useContext(ProfileContext)
+
+
     // eslint-disable-next-line no-unused-vars
-    // const [query, setQuery] = useState(searchParams.get('Type'))
     const query = searchParams.get('Type')
     return (
         <>
@@ -100,7 +108,22 @@ const Index = () => {
                                             )
                                         }
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z" /><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" /></svg><span>Hoá đơn</span>
+                                        <svg
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            viewBox="0 0 24 24"
+                                            height="2em"
+                                            width="2em"
+                                        >
+                                            <path stroke="none" d="M0 0h24v24H0z" />
+                                            <path d="M9 17 A2 2 0 0 1 7 19 A2 2 0 0 1 5 17 A2 2 0 0 1 9 17 z" />
+                                            <path d="M19 17 A2 2 0 0 1 17 19 A2 2 0 0 1 15 17 A2 2 0 0 1 19 17 z" />
+                                            <path d="M5 17H3v-4M2 5h11v12m-4 0h6m4 0h2v-6h-8m0-5h5l3 5M3 9h4" />
+                                        </svg>
+                                        <span>Đang giao</span>
                                     </Tab>
                                 </Tab.List>
                                 <Tab.List className="rounded-sm">
@@ -111,6 +134,21 @@ const Index = () => {
                                         className={() =>
                                             classNames(
                                                 query == 6 ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-900',
+                                                'flex items-center p-2 space-x-3 rounded-md'
+                                            )
+                                        }
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z" /><path d="M14 3v5h5M16 13H8M16 17H8M10 9H8" /></svg><span>Hoá đơn</span>
+                                    </Tab>
+                                </Tab.List>
+                                <Tab.List className="rounded-sm">
+                                    <Tab
+                                        onClick={() => { setSearchParams('?Type=7') }}
+
+                                        key={7}
+                                        className={() =>
+                                            classNames(
+                                                query == 7 ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-900',
                                                 'flex items-center p-2 space-x-3 rounded-md'
                                             )
                                         }
@@ -148,10 +186,17 @@ const Index = () => {
                 </div>
 
                 <div className="container mx-auto mt-12">
-                    {
+                    {/* {
                         query == 1 || query == 2 || query == 3 ?
-                            <StoreRender type={`type=${query}`} /> : <OrderRender type={`type=${query}`} />
-                    }
+                            <StoreRender data={products} TABLE_HEAD={TABLE_HEAD} type={`type=${query}`} /> : <OrderRender TABLE_HEAD={TABLE_HEAD} type={`type=${query}`} />
+                    } */}
+                    {query == 1 && <StoreRender data={products} TABLE_HEAD={TABLE_HEAD1} type={`type=${query}`} />}
+                    {query == 2 && <StoreRender data={products} TABLE_HEAD={TABLE_HEAD2} type={`type=${query}`} />}
+                    {query == 3 && <EmployeesRender data={employees} TABLE_HEAD={TABLE_HEAD3} type={`type=${query}`} />}
+                    {query == 4 && <OrderRender data={products} TABLE_HEAD={TABLE_HEAD3} type={`type=${query}`} />}
+                    {query == 5 && <OrderRender data={products} TABLE_HEAD={TABLE_HEAD3} type={`type=${query}`} />}
+                    {query == 6 && <OrderRender data={products} TABLE_HEAD={TABLE_HEAD3} type={`type=${query}`} />}
+
                 </div>
             </div>
         </>

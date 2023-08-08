@@ -71,3 +71,18 @@ exports.editProfile = async (req, res, next) => {
         res.json(error)
     }
 }
+
+exports.getAllEmployees = async (req, res, next) => {
+    try {
+        const employees = await Employee.find()
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                employees
+            }
+        })
+    } catch (error) {
+        res.json(error)
+    }
+}

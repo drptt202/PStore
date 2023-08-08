@@ -6,6 +6,7 @@ export const ProfileContext = createContext()
 // eslint-disable-next-line react/prop-types
 export const ProfileProvider = ({ children }) => {
     const [profileData, setProfileData] = useState([])
+    const [employees, setEmployees] = useState([])
 
     useEffect(() => {
         axiosCustom.get('/auth/profile')
@@ -15,8 +16,17 @@ export const ProfileProvider = ({ children }) => {
             .catch(err => console.log(err))
     }, [])
 
+    useEffect(() => {
+        axiosCustom.get('/admin/employees')
+            .then(res => {
+                setEmployees(res.data.data.employees)
+            })
+            .catch(err => console.log(err))
+    }, [])
+
     const ProfileContextData = {
-        profileData
+        profileData,
+        employees
     }
 
     return (
