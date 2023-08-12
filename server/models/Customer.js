@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs')
 
 
 const customerSchema = new mongoose.Schema({
-    // _id: mongoose.SchemaTypes.ObjectId,
     Username: { type: String, unique: true, trim: true, required: [true, 'User name must be required'] },
     Password: { type: String, trim: true, required: [true, 'Password must be required'], minlength: [6, 'Password must be at least 6 characters'] },
     ID: { type: Number, trim: true, required: [true, 'ID must be required'] },

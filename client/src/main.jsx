@@ -19,6 +19,8 @@ import ProductLists from './components/ProductLists'
 import { ProfileProvider } from './Contexts/ProfileContext';
 import ResultList from './components/Navigation/Search/resultList';
 import Admin from './components/Admin'
+import { AddProvider } from './Contexts/AddContext';
+import { AdminProvider } from './Contexts/AdminContext';
 
 
 const role = localStorage.getItem('Role');
@@ -82,17 +84,26 @@ else {
       element:
         <Login />
     },
+    {
+      path: "/dang-ky",
+      element:
+        <Register />
+    },
   ])
 }
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ProductProvider>
-      <ProfileProvider>
-        <CartProvider>
-          <RouterProvider router={router} />
-          <Toaster />
-        </CartProvider>
-      </ProfileProvider>
-    </ProductProvider>
+    <AdminProvider>
+      <ProductProvider>
+        <ProfileProvider>
+          <CartProvider>
+            <AddProvider>
+              <RouterProvider router={router} />
+            </AddProvider>
+            <Toaster />
+          </CartProvider>
+        </ProfileProvider>
+      </ProductProvider>
+    </AdminProvider>
   </React.StrictMode>,
 )

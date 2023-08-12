@@ -9,7 +9,10 @@ const getItems = async (Username, Status, req, res, next) => {
             const code = await Product.find({ Code: item.Item })
             const data = {
                 Item: code[0],
-                Date: item.Date
+                OrderDate: item.OrderDate,
+                AcceptDate: item.AcceptDate,
+                Date: item.Date,
+                CancelledDate: item.CancelledDate
             }
             result = [...result, data]
         }
@@ -77,7 +80,10 @@ exports.addItemToCart = async (req, res, next) => {
             $push: {
                 CartItems: {
                     Item: req.params.itemID,
-                    Date: ""
+                    OrderDate: "",
+                    AcceptDate: "",
+                    Date: "",
+                    CancelledDate: ""
                 },
             },
         })
@@ -130,7 +136,10 @@ exports.checkOut = async function (req, res, next) {
             $push: {
                 CartItems: {
                     Item: req.params.itemID,
-                    Date: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+                    OrderDate: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`,
+                    AcceptDate: "",
+                    Date: "",
+                    CancelledDate: ""
                 },
             }
         })
@@ -144,34 +153,6 @@ exports.checkOut = async function (req, res, next) {
             data: {
                 carts,
                 Status: "To confirm"
-            }
-        })
-    }
-    catch (err) {
-        res.json(err)
-    }
-}
-
-exports.delivery = async function (req, res, next) {
-    try {
-        const { Username } = req
-
-        await Cart.updateOne({ $and: [{ Username: Username }, { Status: "To Ship" }] }, {
-            $push: {
-                CartItems: req.params.itemID,
-            },
-        })
-        await Cart.updateOne({ $and: [{ Username: Username }, { Status: "To confirm" }] }, {
-            $pull: {
-                CartItems: req.params.itemID,
-            },
-        })
-        const carts = await Cart.find({ $and: [{ Username: Username }, { Status: "To Ship" }] })
-        res.status(200).json({
-            status: "success",
-            data: {
-                carts,
-                Status: "To Ship"
             }
         })
     }
@@ -208,12 +189,16 @@ exports.cancelOrder = async function (req, res, next) {
     try {
         const { Username } = req
         const date = new Date();
+        const { OrderDate } = req.body
 
         await Cart.updateOne({ $and: [{ Username: Username }, { Status: "Cancelled" }] }, {
             $push: {
                 CartItems: {
                     Item: req.params.itemID,
-                    Date: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+                    OrderDate: OrderDate,
+                    AcceptDate: "",
+                    Date: "",
+                    CancelledDate: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
                 },
             }
         })

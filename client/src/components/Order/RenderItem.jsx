@@ -12,13 +12,13 @@ import { useEffect, useReducer, useState } from "react";
 import { add1ToCart, deleteType, getOrder } from "../../services/ApiService";
 import { toast } from "react-hot-toast";
 
-const TABLE_HEAD = ["Sản phẩm", "Giá", "Số lượng", "Ngày đặt", "Trạng thái", "Thanh toán", "Tổng cộng", ""];
 
 const RenderItem = (props) => {
     // eslint-disable-next-line no-unused-vars
     const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     // eslint-disable-next-line react/prop-types
     const { type } = props
+    const TABLE_HEAD = ["Sản phẩm", "Giá", "Số lượng", type === "type=1" ? "Ngày đặt" : type === "type=2" ? "Ngày rời kho" : type === "type=3" ? "Ngày nhận hàng" : "Ngày huỷ", type === "type=3" ? "Nhân viên" : "Trạng thái", "Thanh toán", "Tổng cộng", ""];
     const [data, setData] = useState([])
     const [allItems, setAllItems] = useState([])
 
@@ -57,11 +57,11 @@ const RenderItem = (props) => {
                 setAllItems(res.data.data.result)
             })
     }, [ignored, type])
-    const deleteOrder = (Code) => {
+    const deleteOrder = (Code, OrderDate) => {
         try {
             for (let i = 0; i < allItems.length; i++) {
                 if (allItems[i].Item.Code === Code) {
-                    deleteType(Code)
+                    deleteType(Code, OrderDate)
                 }
             }
             toast('Huỷ đơn hàng thành công', {
@@ -129,7 +129,7 @@ const RenderItem = (props) => {
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {item.Date}
+                                                {type === "type=1" ? item.OrderDate : type === 'type=2' ? item.AcceptDate : type === "type=3" ? item.Date : item.CancelledDate}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -167,7 +167,7 @@ const RenderItem = (props) => {
                                                 type === "type=1"
                                                     ?
                                                     <Tooltip>
-                                                        <IconButton variant="text" color="blue-gray" disabled={disabled} content="Huỷ" onClick={() => { deleteOrder(item.Item.Code); onClick() }}>
+                                                        <IconButton variant="text" color="blue-gray" disabled={disabled} content="Huỷ" onClick={() => { deleteOrder(item.Item.Code, item.OrderDate); onClick() }}>
                                                             <TrashIcon className="h-4 w-4" />
                                                         </IconButton>
                                                     </Tooltip>
@@ -177,8 +177,6 @@ const RenderItem = (props) => {
                                                         </IconButton>
                                                     </Tooltip>
                                             }
-
-
                                         </td>
                                     </tr>
                                 );

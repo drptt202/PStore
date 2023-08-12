@@ -1,6 +1,7 @@
 
 const express = require('express')
 const cors = require('cors')
+const bodyParser = require('body-parser');
 require('dotenv').config()
 const app = express()
 const { connectDB } = require('./config/db')
@@ -16,7 +17,8 @@ const commentRoute = require('./routes/commentRoute')
 
 connectDB()
 app.use(cors())
-app.use(express.json())
+app.use(express.json({ limit: '100mb' }))
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 
 //Mount the routes
 app.use('/api/v1/auth/', authRoute)

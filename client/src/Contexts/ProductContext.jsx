@@ -8,7 +8,6 @@ export const ProductProvider = ({ children }) => {
     const [top5, setTop5] = useState([])
     const [selling, setSelling] = useState([])
     const [store, setStore] = useState([])
-    const [products, setProducts] = useState([])
 
 
     useEffect(() => {
@@ -19,16 +18,6 @@ export const ProductProvider = ({ children }) => {
                 console.log(err)
             })
     }, [])
-
-    useEffect(() => {
-        axiosCustom.get("/admin/product")
-            .then((res) => {
-                setProducts(res.data.data.products)
-            }).catch((err) => {
-                console.log(err)
-            })
-    }, [])
-
     useEffect(() => {
         axiosCustom.get("/product/top-5")
             .then((res) => {
@@ -47,7 +36,7 @@ export const ProductProvider = ({ children }) => {
             })
     }, [])
     const ProductData = {
-        top5, selling, store, products
+        top5, selling, store
     }
     return (
         <ProductContext.Provider value={ProductData}>

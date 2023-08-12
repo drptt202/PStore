@@ -1,5 +1,7 @@
 const Customer = require('../models/Customer')
 const Employee = require('../models/Employee')
+const Address = require('../models/Address')
+
 const Cart = require('../models/Cart')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
@@ -14,18 +16,29 @@ const status = [
 
 exports.register = async (req, res, next) => {
     try {
-        const customer = await Customer.create(req.body)
-        const token = jwt.sign({ Username: customer.Username }, process.env.APP_SECRET)
-        for (let item of status) {
-            await Cart.create({ Status: item, Username: req.body.Username, CartItems: [] })
-        }
-        res.status(200).json({
-            status: 'success',
-            data: {
-                token,
-                Username: customer.Username
+        const employee = await Employee.find({ Email: req.body.Email })
+        if (employee.length == 0) {
+            const customer = await Customer.create(req.body)
+            await Address.create({ Username: req.body.Username, Address: [] })
+            const token = jwt.sign({ Username: customer.Username }, process.env.APP_SECRET)
+            for (let item of status) {
+                await Cart.create({ Status: item, Username: req.body.Username, CartItems: [] })
             }
-        })
+            res.status(200).json({
+                status: 'success',
+                data: {
+                    token,
+                    Username: customer.Username
+                }
+            })
+
+        }
+        else {
+            res.status(404).json({
+                status: 'Không thể tạo tài khoản bằng Email này',
+            })
+        }
+        // res.json()
     } catch (error) {
         res.json(error)
     }

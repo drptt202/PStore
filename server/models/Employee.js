@@ -8,7 +8,8 @@ const employeeSchema = new mongoose.Schema({
     LastName: { type: String, trim: true, required: [true, 'Last name must be required'] },
     DateOfBirth: { type: String, trim: true, required: [true, 'Date of birth must be required'] },
     Phone: { type: String, trim: true, required: [true, 'Phone number must be required'] },
-    Role: String
+    Role: String,
+    Status: Boolean
 }, { timestamps: true })
 
 employeeSchema.pre('save', function (next) {

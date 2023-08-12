@@ -12,10 +12,15 @@ export const searchByKeyword = (keyword) => axiosCustom.get(`/product/search/${k
 
 export const getOrder = (type) => axiosCustom.get(`/cart/${type}`)
 
+export const getOrderbyAdmin = (type) => axiosCustom.get(`/admin/order/${type}`)
+
 export const checkout = (code) => axiosCustom.post(`/cart/checkout/${code}`)
 
 export const add1ToCart = (code) => axiosCustom.post(`/cart/${code}`)
 
 export const delete1 = (code) => axiosCustom.put(`/cart/${code}`)
 
-export const deleteType = (code) => axiosCustom.delete(`/cart/cancel/${code}`)
+export const deleteType = (code, OrderDate) => axiosCustom.delete(`/cart/cancel/${code}`, { OrderDate })
+
+export const deleteProdcut = (id) => axiosCustom.delete(`/admin/product/${id}`)
+
