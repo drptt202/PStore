@@ -10,11 +10,11 @@ const productSchema = new mongoose.Schema({
     RAM: { type: String, trim: true },
     DISK: { type: String, trim: true },
     Release: { type: String, trim: true },
-    Feature: { type: String, trim: true },
-    Image: String,
+    Feature: String,
     Code: { type: String, trim: true, unique: true },
-    Description: { type: String }
-}, { timestamps: true })
+    Decription: String,
+    Image: String
+})
 
 const Product = mongoose.model('Product', productSchema);
 

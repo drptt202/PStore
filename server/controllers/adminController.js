@@ -59,6 +59,19 @@ exports.updateImg = async (req, res, next) => {
     }
 }
 
+exports.updateProduct = async (req, res, next) => {
+    try {
+        const { id } = req.params
+        await Product.findByIdAndUpdate({ _id: id }, { ...req.body }, { new: true, runValidators: true });
+        res.status(200).json({
+            status: 'success',
+            id
+        })
+    } catch (error) {
+        res.json(error)
+    }
+}
+
 exports.deleteProduct = async (req, res, next) => {
     try {
         const { code } = req.params
@@ -167,13 +180,12 @@ exports.editStatus = async (req, res, next) => {
 exports.editProfile = async (req, res, next) => {
     try {
         const { Username } = req
-        const employee = await Employee.findOneAndUpdate({ Email: Username }, { ...req.body }, { new: true, runValidators: true })
+        const { id } = req.params
+
+        await Employee.findOneAndUpdate({ _id: id }, { ...req.body }, { new: true, runValidators: true })
 
         res.status(200).json({
             status: 'success',
-            data: {
-                employee
-            }
         })
     } catch (error) {
         res.json(error)
@@ -229,6 +241,7 @@ const getItems = async (Status, req, res, next) => {
                     AcceptDate: product.AcceptDate,
                     Date: product.Date,
                     CancelledDate: product.CancelledDate,
+                    Address: product.Address
                 }
                 result = [...result, data]
             }
@@ -243,6 +256,7 @@ const getItems = async (Status, req, res, next) => {
             if (index === i) {
                 const data = {
                     Employee: result[i].Employee,
+                    Address: result[i].Address,
                     Username: result[i].Username,
                     Item: result[i].Item,
                     OrderDate: result[i].OrderDate,
@@ -272,7 +286,7 @@ const getItems = async (Status, req, res, next) => {
 exports.accept = async (req, res, next) => {
     try {
         const { Username } = req
-        const { User, itemID, OrderDate } = req.body
+        const { User, itemID, OrderDate, Address } = req.body
         const date = new Date();
         const employee = await Employee.find({ Email: Username })
         const name = employee[0].FirstName + " " + employee[0].LastName
@@ -284,9 +298,17 @@ exports.accept = async (req, res, next) => {
                     OrderDate: OrderDate,
                     AcceptDate: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`,
                     Date: "",
-                    CancelledDate: ""
+                    CancelledDate: "",
+                    Address: Address
                 },
             }
+        })
+        const tmp = await Store.find({ _id: "64cc3f33dcdd79205bf59848" })
+        let sum = parseInt(tmp[0].ProductCode[itemID]) - 1;
+        let result = sum.toString();
+        tmp[0].ProductCode[itemID] = result
+        await Store.findOneAndReplace({ _id: "64cc3f33dcdd79205bf59848" }, {
+            ProductCode: tmp[0].ProductCode
         })
         await Cart.updateOne({ $and: [{ Username: User }, { Status: "To confirm" }] }, {
             $pull: {
@@ -304,10 +326,50 @@ exports.accept = async (req, res, next) => {
     }
 }
 
+exports.countAccept = async (req, res, next) => {
+    try {
+        const { itemID, Count } = req.body
+
+        const tmp = await Store.find({ _id: "64cc3f33dcdd79205bf59848" })
+        let sum = parseInt(tmp[0].ProductCode[itemID]) - parseInt([Count]);
+        let result = sum.toString();
+        tmp[0].ProductCode[itemID] = result
+        await Store.findOneAndReplace({ _id: "64cc3f33dcdd79205bf59848" }, {
+            ProductCode: tmp[0].ProductCode
+        })
+        res.status(200).json({
+            status: "success"
+        })
+    }
+    catch (err) {
+        res.json(err)
+    }
+}
+
+exports.countFail = async (req, res, next) => {
+    try {
+        const { itemID, Count } = req.body
+
+        const tmp = await Store.find({ _id: "64cc3f33dcdd79205bf59848" })
+        let sum = parseInt(tmp[0].ProductCode[itemID]) + parseInt([Count]);
+        let result = sum.toString();
+        tmp[0].ProductCode[itemID] = result
+        await Store.findOneAndReplace({ _id: "64cc3f33dcdd79205bf59848" }, {
+            ProductCode: tmp[0].ProductCode
+        })
+        res.status(200).json({
+            status: "success"
+        })
+    }
+    catch (err) {
+        res.json(err)
+    }
+}
+
 exports.success = async (req, res, next) => {
     try {
         const { Username } = req
-        const { User, itemID, OrderDate, AcceptDate } = req.body
+        const { User, itemID, OrderDate, AcceptDate, Address } = req.body
         const date = new Date();
         const employee = await Employee.find({ Email: Username })
         const name = employee[0].FirstName + " " + employee[0].LastName
@@ -319,7 +381,8 @@ exports.success = async (req, res, next) => {
                     OrderDate: OrderDate,
                     AcceptDate: AcceptDate,
                     Date: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`,
-                    CancelledDate: ""
+                    CancelledDate: "",
+                    Address: Address
                 },
             }
         })
@@ -343,7 +406,7 @@ exports.success = async (req, res, next) => {
 exports.fail = async (req, res, next) => {
     try {
         const { Username } = req
-        const { User, itemID, OrderDate, AcceptDate } = req.body
+        const { User, itemID, OrderDate, AcceptDate, Address } = req.body
         const date = new Date();
         const employee = await Employee.find({ Email: Username })
         const name = employee[0].FirstName + " " + employee[0].LastName
@@ -355,11 +418,18 @@ exports.fail = async (req, res, next) => {
                     OrderDate: OrderDate,
                     AcceptDate: AcceptDate,
                     Date: "",
-                    CancelledDate: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+                    CancelledDate: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`,
+                    Address: Address
                 },
             }
         })
-
+        const tmp = await Store.find({ _id: "64cc3f33dcdd79205bf59848" })
+        let sum = parseInt(tmp[0].ProductCode[itemID]) + 1;
+        let result = sum.toString();
+        tmp[0].ProductCode[itemID] = result
+        await Store.findOneAndReplace({ _id: "64cc3f33dcdd79205bf59848" }, {
+            ProductCode: tmp[0].ProductCode
+        })
         await Cart.updateOne({ $and: [{ Username: User }, { Status: "To ship" }] }, {
             $pull: {
                 CartItems: {

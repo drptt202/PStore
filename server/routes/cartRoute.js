@@ -18,7 +18,7 @@ Router.route('/checkout/:itemID').post(verifyToken, checkOut)
 Router.route('/type=1').get(verifyToken, getAllType1)
 
 //Cancel order
-Router.route('/cancel/:itemID').delete(verifyToken, cancelOrder)
+Router.route('/cancel/:itemID').post(verifyToken, cancelOrder)
 
 //To ship
 Router.route('/type=2').get(verifyToken, getAllType2)

@@ -3,11 +3,15 @@ import classNames from 'classnames'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import StoreRender from './Store/StoreRender'
 import OrderRender from './Order/OrderRender'
+import Profile from './Profile'
 import { useContext } from 'react'
 import { TABLE_HEAD1, TABLE_HEAD2, TABLE_HEAD3, TABLE_HEAD4, TABLE_HEAD5, TABLE_HEAD6, TABLE_HEAD7, TABLE_HEAD8 } from './table_head'
 import EmployeesRender from './Employees/EmployeesRender'
 import { AdminContext } from '../../Contexts/AdminContext'
 import CustomerRender from './Customers/CustomersRender'
+import { role } from '../../store/store'
+
+
 const Index = () => {
     const navigate = useNavigate()
     const [searchParams, setSearchParams] = useSearchParams()
@@ -64,21 +68,24 @@ const Index = () => {
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span>Tồn kho</span>
                                     </Tab>
                                 </Tab.List>
-                                <Tab.List className="rounded-sm">
-                                    <Tab
-                                        onClick={() => { setSearchParams('?Type=3') }}
+                                {
+                                    localStorage.getItem('Role') == "Admin" &&
+                                    <Tab.List className="rounded-sm">
+                                        <Tab
+                                            onClick={() => { setSearchParams('?Type=3') }}
 
-                                        key={3}
-                                        className={() =>
-                                            classNames(
-                                                query == 3 ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-900',
-                                                'flex items-center p-2 space-x-3 rounded-md'
-                                            )
-                                        }
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span>Nhân viên</span>
-                                    </Tab>
-                                </Tab.List>
+                                            key={3}
+                                            className={() =>
+                                                classNames(
+                                                    query == 3 ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-900',
+                                                    'flex items-center p-2 space-x-3 rounded-md'
+                                                )
+                                            }
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span>Nhân viên</span>
+                                        </Tab>
+                                    </Tab.List>
+                                }
                                 <Tab.List className="rounded-sm">
                                     <Tab
                                         onClick={() => { setSearchParams('?Type=8') }}
@@ -185,6 +192,26 @@ const Index = () => {
                                 </Tab.List>
                                 <Tab.List className="rounded-sm">
                                     <Tab
+                                        className={() =>
+                                            classNames('border-transparent text-gray-900 flex items-center p-2 space-x-3 rounded-md'
+                                            )
+                                        }
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="currentColor"
+                                            height="2em"
+                                            width="2em"
+                                        >
+                                            <path d="M19 19H5V5h14m0-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2m-2.5 13.25c0-1.5-3-2.25-4.5-2.25s-4.5.75-4.5 2.25V17h9M12 12.25A2.25 2.25 0 0014.25 10 2.25 2.25 0 0012 7.75 2.25 2.25 0 009.75 10 2.25 2.25 0 0012 12.25z" />
+                                        </svg>
+                                        <span>Tài khoản</span>
+                                    </Tab>
+
+                                </Tab.List>
+                                {/* <Profile /> */}
+                                <Tab.List className="rounded-sm">
+                                    <Tab
                                         onClick={toLogout}
                                         className={() =>
                                             classNames('border-transparent text-gray-900 flex items-center p-2 space-x-3 rounded-md'
@@ -219,7 +246,7 @@ const Index = () => {
                     } */}
                     {query == 1 && <StoreRender data={products} TABLE_HEAD={TABLE_HEAD1} type={`type=${query}`} />}
                     {query == 2 && <StoreRender data={products} TABLE_HEAD={TABLE_HEAD2} type={`type=${query}`} />}
-                    {query == 3 && <EmployeesRender data={employees} TABLE_HEAD={TABLE_HEAD3} type={`type=${query}`} />}
+                    {role == "Admin" && query == 3 && <EmployeesRender data={employees} TABLE_HEAD={TABLE_HEAD3} type={`type=${query}`} />}
                     {query == 4 && <OrderRender TABLE_HEAD={TABLE_HEAD4} type={`type=${query}`} />}
                     {query == 5 && <OrderRender TABLE_HEAD={TABLE_HEAD5} type={`type=${query}`} />}
                     {query == 6 && <OrderRender TABLE_HEAD={TABLE_HEAD6} type={`type=${query}`} />}

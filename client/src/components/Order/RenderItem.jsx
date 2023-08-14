@@ -57,11 +57,11 @@ const RenderItem = (props) => {
                 setAllItems(res.data.data.result)
             })
     }, [ignored, type])
-    const deleteOrder = (Code, OrderDate) => {
+    const deleteOrder = (Code, OrderDate, Address) => {
         try {
             for (let i = 0; i < allItems.length; i++) {
                 if (allItems[i].Item.Code === Code) {
-                    deleteType(Code, OrderDate)
+                    deleteType(Code, OrderDate, Address)
                 }
             }
             toast('Huỷ đơn hàng thành công', {
@@ -167,7 +167,7 @@ const RenderItem = (props) => {
                                                 type === "type=1"
                                                     ?
                                                     <Tooltip>
-                                                        <IconButton variant="text" color="blue-gray" disabled={disabled} content="Huỷ" onClick={() => { deleteOrder(item.Item.Code, item.OrderDate); onClick() }}>
+                                                        <IconButton variant="text" color="blue-gray" disabled={disabled} content="Huỷ" onClick={() => { deleteOrder(item.Item.Code, item.OrderDate, item.Address); onClick() }}>
                                                             <TrashIcon className="h-4 w-4" />
                                                         </IconButton>
                                                     </Tooltip>

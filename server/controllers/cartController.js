@@ -12,7 +12,8 @@ const getItems = async (Username, Status, req, res, next) => {
                 OrderDate: item.OrderDate,
                 AcceptDate: item.AcceptDate,
                 Date: item.Date,
-                CancelledDate: item.CancelledDate
+                CancelledDate: item.CancelledDate,
+                Address: item.Address
             }
             result = [...result, data]
         }
@@ -131,6 +132,7 @@ exports.checkOut = async function (req, res, next) {
     try {
         const { Username } = req
         const date = new Date();
+        const { Address } = req.body
 
         await Cart.updateOne({ $and: [{ Username: Username }, { Status: "To confirm" }] }, {
             $push: {
@@ -139,7 +141,8 @@ exports.checkOut = async function (req, res, next) {
                     OrderDate: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`,
                     AcceptDate: "",
                     Date: "",
-                    CancelledDate: ""
+                    CancelledDate: "",
+                    Address
                 },
             }
         })
@@ -189,7 +192,7 @@ exports.cancelOrder = async function (req, res, next) {
     try {
         const { Username } = req
         const date = new Date();
-        const { OrderDate } = req.body
+        const { OrderDate, Address } = req.body
 
         await Cart.updateOne({ $and: [{ Username: Username }, { Status: "Cancelled" }] }, {
             $push: {
@@ -198,7 +201,8 @@ exports.cancelOrder = async function (req, res, next) {
                     OrderDate: OrderDate,
                     AcceptDate: "",
                     Date: "",
-                    CancelledDate: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+                    CancelledDate: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`,
+                    Address: Address
                 },
             }
         })
@@ -213,8 +217,7 @@ exports.cancelOrder = async function (req, res, next) {
         res.status(200).json({
             status: "success",
             data: {
-                carts,
-                Status: "Cancelled"
+                Status: "Cancelled",
             }
         })
     }

@@ -12,7 +12,7 @@ const Index = () => {
     const [disabled, setDisabled] = useState(false);
     const { store } = useContext(ProductContext)
     const [product, setProduct] = useState([])
-    const [time, setTime] = useState(1)
+    const [count, setCount] = useState(1)
 
 
     useEffect(() => {
@@ -27,13 +27,14 @@ const Index = () => {
 
     const addToCart = (ma) => {
         let i = 1;
-        while (i <= time) {
+        while (i <= count) {
             add1ToCart(ma)
                 .then(() => {
                     openToast()
                 }).catch(err => console.log(err))
             i++;
         }
+        window.location.reload()
     }
 
     const onClick = () => {
@@ -133,7 +134,7 @@ const Index = () => {
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-sm font-medium text-gray-900">Số lượng</h3>
                                     </div>
-                                    <Input type={'number'} value={time} onChange={e => { setTime(e.target.value) }} />
+                                    <Input type={'number'} value={count} onChange={e => { setCount(e.target.value) }} />
                                 </div>
                                 <div className='flex justify-between'>
                                     <button disabled={disabled} onClick={() => { onClick(); addToCart(product.Code); }}

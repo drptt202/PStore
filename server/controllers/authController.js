@@ -106,6 +106,22 @@ exports.profile = async (req, res, next) => {
     }
 }
 
+exports.address = async (req, res, next) => {
+    try {
+        const { Username } = req
+        const address = await Address.findOne({ Username })
+
+        res.status(200).json({
+            status: 'success',
+            data: {
+                address
+            }
+        })
+    } catch (error) {
+        res.json(error)
+    }
+}
+
 exports.password = async (req, res, next) => {
     try {
         const { Username } = req
@@ -115,10 +131,7 @@ exports.password = async (req, res, next) => {
             await customer.save()
 
             res.status(200).json({
-                status: 'success',
-                data: {
-                    customer
-                }
+                status: 'success'
             })
         }
     } catch (error) {
@@ -129,13 +142,10 @@ exports.password = async (req, res, next) => {
 exports.editProfile = async (req, res, next) => {
     try {
         const { Username } = req
-        const customer = await Customer.findOneAndUpdate({ Username: Username }, { ...req.body }, { new: true, runValidators: true });
+        await Customer.findOneAndUpdate({ Username: Username }, { ...req.body }, { new: true, runValidators: true });
 
         res.status(200).json({
-            status: 'success',
-            data: {
-                customer
-            }
+            status: 'success'
         })
     } catch (error) {
         res.json(error)

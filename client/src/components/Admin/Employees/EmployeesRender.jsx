@@ -15,10 +15,13 @@ import {
 } from "@material-tailwind/react";
 import { useContext, useEffect, useReducer } from "react";
 import AddEmployee from "./AddEmployee";
-import { OPEN_ADD } from "../../../reducers/types";
+import { OPEN_ADD, OPEN_EDIT } from "../../../reducers/types";
 import { AddContext } from "../../../Contexts/AddContext";
 import axiosCustom from "../../../utils/axiosCustom";
 import { toast } from "react-hot-toast";
+import { role } from "../../../store/store";
+import { EditContext } from "../../../Contexts/EditContext";
+import EditEmployee from "./EditEmployee";
 
 
 const EmployeesRender = (props) => {
@@ -27,6 +30,8 @@ const EmployeesRender = (props) => {
     // eslint-disable-next-line react/prop-types
     const { data, type, TABLE_HEAD } = props
     const { dispatch2 } = useContext(AddContext)
+    const { editDispatch2 } = useContext(EditContext)
+
 
     const changeStatus = () => {
         axiosCustom.post('/admin/edit')
@@ -43,7 +48,7 @@ const EmployeesRender = (props) => {
                 <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
                     <div>
                         <Typography variant="h5" color="blue-gray">
-                            {localStorage.getItem('Role')}
+                            {role}
                         </Typography>
                     </div>
                     <div className="flex w-full shrink-0 gap-2 md:w-max">
@@ -128,12 +133,15 @@ const EmployeesRender = (props) => {
                                             </td>
                                             <td className={classes}>
                                                 <Tooltip>
-                                                    <Menu>
+                                                    <Menu dismiss={{
+                                                        itemPress: false,
+                                                    }}>
                                                         <MenuHandler>
                                                             <PencilIcon className="h-4 w-4 cursor-pointer" />
                                                         </MenuHandler>
                                                         <MenuList>
-                                                            <MenuItem>Chỉnh sửa</MenuItem>
+                                                            <MenuItem onClick={() => { editDispatch2({ type: OPEN_EDIT }) }}>Chỉnh sửa</MenuItem>
+                                                            <EditEmployee data={item} />
                                                             <MenuItem onClick={changeStatus}>Đổi trạng thái</MenuItem>
                                                         </MenuList>
                                                     </Menu>

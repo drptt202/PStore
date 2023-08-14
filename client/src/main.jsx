@@ -21,9 +21,11 @@ import ResultList from './components/Navigation/Search/resultList';
 import Admin from './components/Admin'
 import { AddProvider } from './Contexts/AddContext';
 import { AdminProvider } from './Contexts/AdminContext';
+import { role } from './store/store';
+import { EditProvider } from './Contexts/EditContext';
 
 
-const role = localStorage.getItem('Role');
+
 let router
 if (role == 'User') {
   router = createBrowserRouter([
@@ -97,13 +99,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <ProductProvider>
         <ProfileProvider>
           <CartProvider>
-            <AddProvider>
-              <RouterProvider router={router} />
-            </AddProvider>
-            <Toaster />
+            <EditProvider>
+              <AddProvider>
+                <RouterProvider router={router} />
+              </AddProvider>
+            </EditProvider>
           </CartProvider>
         </ProfileProvider>
       </ProductProvider>
     </AdminProvider>
+    <Toaster />
   </React.StrictMode>,
 )

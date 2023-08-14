@@ -5,6 +5,8 @@ import {
     DialogBody,
     DialogFooter,
     Input,
+    Select,
+    Option,
 } from "@material-tailwind/react";
 import { OPEN_ADD } from "../../../reducers/types";
 import { useContext, useState } from "react";
@@ -25,6 +27,7 @@ const AddProduct = () => {
     const [code, setCode] = useState('')
     const [decription, setDecription] = useState('')
     const [quantity, setQuantity] = useState('')
+    const [feature, setFeature] = useState('')
     const [img, setImg] = useState('')
 
     const convertToBase64 = (e) => {
@@ -50,8 +53,9 @@ const AddProduct = () => {
                 DISK: disk,
                 Release: release,
                 Code: code,
+                Decription: decription,
                 Image: img,
-                Dicription: decription
+                Feature: feature
             })
             axiosCustom.post('/admin/store', {
                 Code: code,
@@ -68,49 +72,44 @@ const AddProduct = () => {
             <DialogBody>
                 <form className="flex flex-col gap-4">
                     <div>
-                        <div>
-                            <label>
-                                <span className="float-left">
-                                    Loại:
-                                </span>
-                                <select className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" color="blue" label="Select Version">
-                                    <option onClick={() => setCategory('console')}>Máy chơi game</option>
-                                    <option onClick={() => setCategory('game')}>Game</option>
-                                    <option onClick={() => setCategory('pad')}>Thiết bị chơi game</option>
-                                </select>
-                            </label>
-                            <div className="my-4 flex items-center gap-4">
-                                <Input label='Mã sản phẩm' onChange={(e) => setCode(e.target.value)} className="rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                                <Input label='Release' onChange={(e) => setRelease(e.target.value)} className="rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type="number" min={0} />
-                            </div>
-
-                            <Input label='Hãng' onChange={(e) => setBrand(e.target.value)} className="block mt-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-
-                            <Input label='Tên' onChange={(e) => setName(e.target.value)} className="block mt-2  w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-
-                            <Input label='CPU' onChange={(e) => setCPU(e.target.value)} className="block mt-2  w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                            <div className="my-4 flex items-center gap-4">
-                                <Input label='DISK' onChange={(e) => setDISK(e.target.value)} className=" rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                                <Input label='RAM' onChange={(e) => setRAM(e.target.value)} className="rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                            </div>
-                            <div className="my-4 flex items-center gap-4">
-                                <Input label='Giá' onChange={(e) => setPrice(e.target.value)} className="rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type="number" min={0} />
-                                <Input label='Số lượng' onChange={(e) => setQuantity(e.target.value)} className="rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type="number" min={0} />
-                            </div>
-
-
-                            <input
-                                onChange={convertToBase64}
-                                className="block mt-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" id="file_input" type="file" />
-
-                            <label>
-                                <span className="float-left">
-                                    Mô tả:
-                                </span>
-                                <textarea onChange={(e) => setDecription(e.target.value)} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                            </label>
+                        Loại:
+                        <Select defaultValue={category} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" color="blue">
+                            <Option onClick={() => setCategory('console')}>Máy chơi game</Option>
+                            <Option onClick={() => setCategory('game')}>Game</Option>
+                            <Option onClick={() => setCategory('pad')}>Thiết bị chơi game</Option>
+                        </Select>
+                        <div className="my-4 flex items-center gap-4">
+                            <Input label='Mã sản phẩm' onChange={(e) => setCode(e.target.value)} className="rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                            <Input label='Release' onChange={(e) => setRelease(e.target.value)} className="rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type="number" min={0} />
                         </div>
+
+                        <Input label='Hãng' onChange={(e) => setBrand(e.target.value)} className="block mt-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+
+                        <Input label='Tên' onChange={(e) => setName(e.target.value)} className="block mt-2  w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+
+                        <div className="my-4 flex items-center gap-4">
+                            <Input label='CPU' onChange={(e) => setCPU(e.target.value)} className=" rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                            <Input label='Tính năng' onChange={(e) => setFeature(e.target.value)} className="rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        </div>
+                        <div className="my-4 flex items-center gap-4">
+                            <Input label='DISK' onChange={(e) => setDISK(e.target.value)} className=" rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                            <Input label='RAM' onChange={(e) => setRAM(e.target.value)} className="rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        </div>
+                        <div className="my-4 flex items-center gap-4">
+                            <Input label='Giá' onChange={(e) => setPrice(e.target.value)} className="rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type="number" min={0} />
+                            <Input label='Số lượng' onChange={(e) => setQuantity(e.target.value)} className="rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type="number" min={0} />
+                        </div>
+
+
+                        <input
+                            onChange={convertToBase64}
+                            className="block mt-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" id="file_input" type="file" />
+
+                        Mô tả:
+                        <Input value={decription} type={'text'} onChange={(e) => setDecription(e.target.value)} className=" h-[40px] w-full block break-words rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+
                     </div>
+
                 </form>
             </DialogBody>
             <DialogFooter>

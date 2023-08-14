@@ -19,13 +19,15 @@ import {
 } from "@material-tailwind/react";
 import { useContext, useEffect, useReducer, useState } from "react";
 import { ProductContext } from "../../../Contexts/ProductContext";
-import { addReducer } from "../../../reducers/AddReducer";
-import { OPEN_ADD } from './../../../reducers/types';
+import { OPEN_ADD, OPEN_EDIT } from './../../../reducers/types';
 import AddProduct from "./AddProduct";
 import { AddContext } from "../../../Contexts/AddContext";
 import { deleteProdcut } from "../../../services/ApiService";
 import { toast } from "react-hot-toast";
 import axiosCustom from "../../../utils/axiosCustom";
+import { role } from "../../../store/store";
+import EditProduct from "./EditProduct";
+import { EditContext } from "../../../Contexts/EditContext";
 
 
 const StoreRender = (props) => {
@@ -33,16 +35,11 @@ const StoreRender = (props) => {
     const { data, type, TABLE_HEAD } = props
     const { store } = useContext(ProductContext)
     const { open, dispatch } = useContext(AddContext)
+    const { openEdit, editDispatch } = useContext(EditContext)
     const [img, setImg] = useState('')
     const [quantity, setQuantity] = useState(0)
     const [disabled, setDisabled] = useState(false);
 
-    const onClick = () => {
-        setDisabled(true);
-        setInterval(() => {
-            setDisabled(false);
-        }, 1000)
-    };
 
     const handleUpdate = (Code, Quantity) => {
         axiosCustom.put(`/admin/store`, {
@@ -83,7 +80,7 @@ const StoreRender = (props) => {
                 <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
                     <div>
                         <Typography variant="h5" color="blue-gray">
-                            {localStorage.getItem('Role')}
+                            {role}
                         </Typography>
                     </div>
                     <div className="flex w-full shrink-0 gap-2 md:w-max">
@@ -125,10 +122,8 @@ const StoreRender = (props) => {
                                 (item, index) => {
                                     const isLast = index === data.length - 1;
                                     const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
-
                                     return (
                                         <tr key={item.Code}>
-
                                             <td className={classes}>
                                                 <Typography variant="small" color="blue-gray" className="font-normal">
                                                     {item.Brand}
@@ -229,21 +224,25 @@ const StoreRender = (props) => {
                                                     type === "type=1"
                                                         ?
                                                         <Tooltip>
-                                                            <Menu>
+                                                            <Menu dismiss={{
+                                                                itemPress: false,
+                                                            }}>
                                                                 <MenuHandler>
                                                                     <PencilIcon className="h-4 w-4 cursor-pointer" />
                                                                 </MenuHandler>
                                                                 <MenuList>
-                                                                    <MenuItem>Chỉnh sửa</MenuItem>
+                                                                    <MenuItem onClick={() => { editDispatch({ type: OPEN_EDIT }) }}>Chỉnh sửa</MenuItem>
+                                                                    <EditProduct data={item} />
                                                                     <MenuItem onClick={() => delete1(item.Code)}>Xoá</MenuItem>
                                                                 </MenuList>
                                                             </Menu>
                                                         </Tooltip>
+
                                                         :
                                                         <Button
                                                             onClick={() => handleUpdate(item.Code, quantity)}
                                                             className="flex items-center gap-3" color="white" size="sm">
-                                                            <svg fill="none" viewBox="0 0 15 15" height="1em" width="1em" {...props}>
+                                                            <svg fill="none" viewBox="0 0 15 15" height="1em" width="1em">
                                                                 <path
                                                                     fill="currentColor"
                                                                     fillRule="evenodd"

@@ -5,6 +5,8 @@ import {
     DialogBody,
     DialogFooter,
     Input,
+    Select,
+    Option,
 } from "@material-tailwind/react";
 import { OPEN_ADD } from "../../../reducers/types";
 import { useContext, useState } from "react";
@@ -51,32 +53,27 @@ const AddEmployee = () => {
             <DialogBody>
                 <form className="flex flex-col gap-4">
                     <div>
-                        <div>
-                            <label>
-                                <span className="float-left">
-                                    Chức vụ:
-                                </span>
-                                <select className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" color="blue" label="Select Version">
-                                    <option onClick={() => setRole('Employee')}>Nhân viên</option>
-                                    <option onClick={() => setRole('Admin')}>Admin</option>
-                                </select>
-                            </label>
 
-                            <Input label='Email' onChange={(e) => setEmail(e.target.value)} className="block mt-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type={'email'} />
+                        Chức vụ:
+                        <Select defaultValue={'Employee'} label="Chọn" className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" color="blue">
+                            <Option value={'Employee'} onClick={() => setRole('Employee')}>Nhân viên</Option>
+                            <Option value={'Admin'} onClick={() => setRole('Admin')}>Admin</Option>
+                        </Select>
 
-                            <Input label='Mật khẩu' onChange={(e) => setPassword(e.target.value)} className="block mt-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type={'password'} />
+                        <Input label='Email' onChange={(e) => setEmail(e.target.value)} className="block mt-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type={'email'} />
 
-                            <Input label='Xác nhận mật khẩu' onChange={(e) => setPassword2(e.target.value)} className="block mt-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type={'password'} />
+                        <Input label='Mật khẩu' onChange={(e) => setPassword(e.target.value)} className="block mt-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type={'password'} />
 
-                            <Input label='Họ' onChange={(e) => setFirstName(e.target.value)} className="block mt-2  w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        <Input label='Xác nhận mật khẩu' onChange={(e) => setPassword2(e.target.value)} className="block mt-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type={'password'} />
 
-                            <Input label='Tên' onChange={(e) => setLastName(e.target.value)} className="block mt-2  w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        <Input label='Họ' onChange={(e) => setFirstName(e.target.value)} className="block mt-2  w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
 
-                            <Input label='Ngày sinh' onChange={(e) => setDateOfBirth(e.target.value)} className="block mt-2  w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        <Input label='Tên' onChange={(e) => setLastName(e.target.value)} className="block mt-2  w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
 
-                            <Input label='Số điện thoại' onChange={(e) => setPhone(e.target.value)} className="block mt-2  w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+                        <Input label='Ngày sinh' onChange={(e) => setDateOfBirth(e.target.value)} className="block mt-2  w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
 
-                        </div>
+                        <Input label='Số điện thoại' onChange={(e) => setPhone(e.target.value)} className="block mt-2  w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+
                     </div>
                 </form>
             </DialogBody>
