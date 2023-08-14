@@ -39,49 +39,50 @@ const OrderRender = (props) => {
     };
 
     const success = async (itemID, User, OrderDate, AcceptDate, Address) => {
-        for (let i = 0; i < allItems.length; i++) {
-            if (allItems[i].Item.Code === itemID && allItems[i].Username === User) {
-                await axiosCustom.post('/admin/order/success',
-                    { User, itemID, OrderDate, AcceptDate, Address }
-                ).then((res) => { console.log(res.status) })
-                    .catch((err) => { console.log(err) })
+        try {
+            for (let i = 0; i < allItems.length; i++) {
+                if (allItems[i].Item.Code === itemID && allItems[i].Username === User) {
+                    await axiosCustom.post('/admin/order/success',
+                        { User, itemID, OrderDate, AcceptDate, Address }
+                    ).then((res) => { console.log(res.status) })
+                        .catch((err) => { console.log(err) })
+                }
             }
-        }
-        toast('Hoàn thành đơn hàng', {
-            duration: 2000,
-            position: 'top-center',
-            className: 'bg-amber-700 w-80',
-            icon: '✅',
-            ariaProps: {
-                role: 'status',
-                'aria-live': 'polite',
-            }
-        })
+            toast('Hoàn thành đơn hàng', {
+                duration: 2000,
+                position: 'top-center',
+                className: 'bg-amber-700 w-80',
+                icon: '✅',
+                ariaProps: {
+                    role: 'status',
+                    'aria-live': 'polite',
+                }
+            })
+        } catch (err) { console.log(err) }
     }
 
-    const fail = async (itemID, User, OrderDate, AcceptDate, Address, Count) => {
-        for (let i = 0; i < allItems.length; i++) {
-            if (allItems[i].Item.Code === itemID && allItems[i].Username === User) {
-                await axiosCustom.post('/admin/order/fail',
-                    { User, itemID, OrderDate, AcceptDate, Address }
-                ).then((res) => { console.log(res.status) })
-                    .catch((err) => { console.log(err) })
+
+    const fail = async (itemID, User, OrderDate, AcceptDate, Address) => {
+        try {
+            for (let i = 0; i < allItems.length; i++) {
+                if (allItems[i].Item.Code === itemID && allItems[i].Username === User) {
+                    await axiosCustom.post('/admin/order/fail',
+                        { User, itemID, OrderDate, AcceptDate, Address }
+                    ).then((res) => { console.log(res.status) })
+                        .catch((err) => { console.log(err) })
+                }
             }
-        }
-        await axiosCustom.put('/admin/order/fail',
-            { itemID, Count }
-        ).then((res) => { console.log(res.data.result) })
-            .catch((err) => { console.log(err) })
-        toast('Huỷ đơn hàng của khách', {
-            duration: 2000,
-            position: 'top-center',
-            className: 'bg-amber-700 w-80',
-            icon: '✅',
-            ariaProps: {
-                role: 'status',
-                'aria-live': 'polite',
-            }
-        })
+            toast('Huỷ đơn hàng của khách', {
+                duration: 2000,
+                position: 'top-center',
+                className: 'bg-amber-700 w-80',
+                icon: '✅',
+                ariaProps: {
+                    role: 'status',
+                    'aria-live': 'polite',
+                }
+            })
+        } catch (err) { console.log(err) }
     }
 
 
@@ -92,30 +93,27 @@ const OrderRender = (props) => {
                 setAllItems(res.data.data.result)
             })
     }, [ignored, type])
-    const acceptOrder1 = async (Code, User, OrderDate, Address, Count) => {
-        for (let i = 0; i < allItems.length; i++) {
-            if (allItems[i].Item.Code === Code && allItems[i].Username === User) {
-                await axiosCustom.post('/admin/order/accept',
-                    { User, itemID: Code, OrderDate, Address }
-                ).then((res) => { console.log(res.status) })
-                    .catch((err) => { console.log(err) })
+    const acceptOrder1 = async (Code, User, OrderDate, Address) => {
+        try {
+            for (let i = 0; i < allItems.length; i++) {
+                if (allItems[i].Item.Code === Code && allItems[i].Username === User) {
+                    await axiosCustom.post('/admin/order/accept',
+                        { User, itemID: Code, OrderDate, Address }
+                    ).then((res) => { console.log(res.status) })
+                        .catch((err) => { console.log(err) })
+                }
             }
-        }
-        await axiosCustom.put('/admin/order/accept',
-            { itemID: Code, Count }
-        ).then((res) => { console.log(res.data.result) })
-            .catch((err) => { console.log(err) })
-
-        toast('Xác nhận đơn hàng thành công', {
-            duration: 2000,
-            position: 'top-center',
-            className: 'bg-amber-700 w-80',
-            icon: '✅',
-            ariaProps: {
-                role: 'status',
-                'aria-live': 'polite',
-            }
-        })
+            toast('Xác nhận đơn hàng thành công', {
+                duration: 2000,
+                position: 'top-center',
+                className: 'bg-amber-700 w-80',
+                icon: '✅',
+                ariaProps: {
+                    role: 'status',
+                    'aria-live': 'polite',
+                }
+            })
+        } catch (err) { console.log(err) }
     }
     return (
         <Card className="h-full w-full">
@@ -273,7 +271,7 @@ const OrderRender = (props) => {
                                                         </MenuHandler>
                                                         <MenuList>
                                                             <MenuItem onClick={() => success(item.Item.Code, item.Username, item.OrderDate, item.AcceptDate, item.Address)}>Giao thành công</MenuItem>
-                                                            <MenuItem onClick={() => fail(item.Item.Code, item.Username, item.OrderDate, item.AcceptDate, item.Address, item.Count)}>Giao thất bại</MenuItem>
+                                                            <MenuItem onClick={() => fail(item.Item.Code, item.Username, item.OrderDate, item.AcceptDate, item.Address)}>Giao thất bại</MenuItem>
                                                         </MenuList>
                                                     </Menu>
                                                 </Tooltip>
@@ -282,7 +280,7 @@ const OrderRender = (props) => {
                                                 type === "type=4"
                                                 &&
                                                 <Tooltip>
-                                                    <IconButton variant="text" color="green" disabled={disabled} onClick={() => { acceptOrder1(item.Item.Code, item.Username, item.OrderDate, item.Address, item.Count); onClick() }}>
+                                                    <IconButton variant="text" color="green" disabled={disabled} onClick={() => { acceptOrder1(item.Item.Code, item.Username, item.OrderDate, item.Address); onClick() }}>
                                                         <svg
                                                             viewBox="0 0 1024 1024"
                                                             fill="currentColor"

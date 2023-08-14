@@ -326,45 +326,6 @@ exports.accept = async (req, res, next) => {
     }
 }
 
-exports.countAccept = async (req, res, next) => {
-    try {
-        const { itemID, Count } = req.body
-
-        const tmp = await Store.find({ _id: "64cc3f33dcdd79205bf59848" })
-        let sum = parseInt(tmp[0].ProductCode[itemID]) - parseInt([Count]);
-        let result = sum.toString();
-        tmp[0].ProductCode[itemID] = result
-        await Store.findOneAndReplace({ _id: "64cc3f33dcdd79205bf59848" }, {
-            ProductCode: tmp[0].ProductCode
-        })
-        res.status(200).json({
-            status: "success"
-        })
-    }
-    catch (err) {
-        res.json(err)
-    }
-}
-
-exports.countFail = async (req, res, next) => {
-    try {
-        const { itemID, Count } = req.body
-
-        const tmp = await Store.find({ _id: "64cc3f33dcdd79205bf59848" })
-        let sum = parseInt(tmp[0].ProductCode[itemID]) + parseInt([Count]);
-        let result = sum.toString();
-        tmp[0].ProductCode[itemID] = result
-        await Store.findOneAndReplace({ _id: "64cc3f33dcdd79205bf59848" }, {
-            ProductCode: tmp[0].ProductCode
-        })
-        res.status(200).json({
-            status: "success"
-        })
-    }
-    catch (err) {
-        res.json(err)
-    }
-}
 
 exports.success = async (req, res, next) => {
     try {

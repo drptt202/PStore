@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Toaster } from 'react-hot-toast';
 import {
@@ -94,7 +93,7 @@ else {
   ])
 }
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  <>
     <AdminProvider>
       <ProductProvider>
         <ProfileProvider>
@@ -109,5 +108,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       </ProductProvider>
     </AdminProvider>
     <Toaster />
-  </React.StrictMode>,
+  </>
 )

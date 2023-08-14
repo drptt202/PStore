@@ -1,7 +1,7 @@
 const express = require('express')
 const { register, password, profile, editProfile, getAllEmployees, addProduct, addQuantity,
     updateQuantity, deleteProduct, updateImg, confirm, shipping, bill, cancelled,
-    accept, success, fail, getAllCustomers, editStatus, updateProduct, countFail, countAccept } = require('../controllers/adminController')
+    accept, success, fail, getAllCustomers, editStatus, updateProduct } = require('../controllers/adminController')
 const { getAllProduct } = require('../controllers/productController');
 const { verifyToken } = require('../middleware/verifyToken');
 
@@ -12,13 +12,9 @@ Router.route('/product').get(getAllProduct)
 
 Router.route('/order/accept').post(verifyToken, accept)
 
-Router.route('/order/accept').put(countAccept)
-
 Router.route('/order/success').post(verifyToken, success)
 
 Router.route('/order/fail').post(verifyToken, fail)
-
-Router.route('/order/fail').put(countFail)
 
 Router.route('/order/type=4').get(confirm)
 
