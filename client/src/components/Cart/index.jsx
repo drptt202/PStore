@@ -1,4 +1,6 @@
-import { Fragment, useContext } from 'react'
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+import { Fragment, useContext, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon, PlusIcon, MinusIcon } from '@heroicons/react/24/outline'
 import { CartContext } from '../../Contexts/CartContext'
@@ -22,6 +24,61 @@ const Index = () => {
             .then(() => {
             }).catch(err => console.log(err))
     }
+
+    const RenderItem = (props) => {
+        const { item, index } = props
+        const [num, setNum] = useState(0)
+        useEffect(() => {
+            setNum(numOfI[item.Item.Code])
+        }, [])
+        return (
+            <li className="flex py-6">
+                <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                    <img
+                        src={item.Item.Image}
+                        alt={item.Item.Name}
+                        className="h-full w-full object-cover object-center"
+                    />
+                </div>
+
+                <div className="ml-4 flex flex-1 flex-col">
+                    <div>
+                        <div className="flex justify-between text-base font-medium text-gray-900">
+                            <h3>
+                                <a href={item.Item.Category}>{item.Item.Name}</a>
+                            </h3>
+                            <p className="ml-4">{item.Item.Price}</p>
+                        </div>
+                        <p className="mt-1 text-sm text-gray-500">{item.Item.Brand}</p>
+                    </div>
+                    <div className="flex flex-1 items-end justify-between text-sm">
+
+                        <div className="flex">
+                            <button
+                                onClick={() => { addToCart(item.Item.Code); setNum(pre => pre + 1) }}
+                                type="button"
+                                className="font-medium text-indigo-600 hover:text-indigo-500"
+                            >
+                                <PlusIcon className="h-6 w-6" aria-hidden="true" />
+
+                            </button>
+                            <form>
+                                <input type="text" className="h-6 w-14" maxLength="3" value={num} onChange={(e) => setNum(e.target.value)} />
+                            </form>
+                            <button
+                                onClick={() => { deleteFromCart(item.Item.Code); setNum(pre => pre - 1) }}
+                                type="button"
+                                className="font-medium text-indigo-600 hover:text-indigo-500"
+                            >
+                                <MinusIcon className="h-6 w-6" aria-hidden="true" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        )
+    }
+
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-10" onClose={() => { dispatch({ type: OPEN_CART }) }}>
@@ -72,50 +129,7 @@ const Index = () => {
                                                     <ul role="list" className="-my-6 divide-y divide-gray-200">
                                                         {cartData && cartData.length > 0
                                                             ? cartData.map((item, index) => (
-                                                                <li key={index} className="flex py-6">
-                                                                    <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                                        <img
-                                                                            src={item.Item.Image}
-                                                                            alt={item.Item.Name}
-                                                                            className="h-full w-full object-cover object-center"
-                                                                        />
-                                                                    </div>
-
-                                                                    <div className="ml-4 flex flex-1 flex-col">
-                                                                        <div>
-                                                                            <div className="flex justify-between text-base font-medium text-gray-900">
-                                                                                <h3>
-                                                                                    <a href={item.Item.Category}>{item.Item.Name}</a>
-                                                                                </h3>
-                                                                                <p className="ml-4">{item.Item.Price}</p>
-                                                                            </div>
-                                                                            <p className="mt-1 text-sm text-gray-500">{item.Item.Brand}</p>
-                                                                        </div>
-                                                                        <div className="flex flex-1 items-end justify-between text-sm">
-
-                                                                            <div className="flex">
-                                                                                <button
-                                                                                    onClick={() => addToCart(item.Item.Code)}
-                                                                                    type="button"
-                                                                                    className="font-medium text-indigo-600 hover:text-indigo-500"
-                                                                                >
-                                                                                    <PlusIcon className="h-6 w-6" aria-hidden="true" />
-
-                                                                                </button>
-                                                                                <form>
-                                                                                    <input type="text" className="h-6 w-14" maxLength="3" value={numOfI[item.Item.Code]} />
-                                                                                </form>
-                                                                                <button
-                                                                                    onClick={() => deleteFromCart(item.Item.Code)}
-                                                                                    type="button"
-                                                                                    className="font-medium text-indigo-600 hover:text-indigo-500"
-                                                                                >
-                                                                                    <MinusIcon className="h-6 w-6" aria-hidden="true" />
-                                                                                </button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
+                                                                <RenderItem item={item} index={index} key={index} />
                                                             ))
                                                             :
                                                             <div className="h-full w-full flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
