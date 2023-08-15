@@ -6,11 +6,15 @@ export const ProfileContext = createContext()
 // eslint-disable-next-line react/prop-types
 export const ProfileProvider = ({ children }) => {
     const [profileData, setProfileData] = useState([])
+    const [Username, setUsername] = useState('')
+
 
     useEffect(() => {
         axiosCustom.get('/auth/profile')
             .then(res => {
-                setProfileData(res.data.data.customer)
+                setProfileData(res.data.data.customer[0])
+                setUsername(res.data.data.customer[0].Username)
+
             })
             .catch(err => console.log(err))
     }, [])
@@ -18,7 +22,7 @@ export const ProfileProvider = ({ children }) => {
 
 
     const ProfileContextData = {
-        profileData
+        profileData, Username
     }
 
     return (

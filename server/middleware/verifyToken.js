@@ -13,6 +13,7 @@ exports.verifyToken = (req, res, next) => {
 
         req.Username = result.Username
         req.Role = result.Role
+        req.Password = result.Password
         next()
     } catch (e) {
         return res.sendStatus(403)

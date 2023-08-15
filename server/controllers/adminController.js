@@ -12,6 +12,12 @@ exports.register = async (req, res, next) => {
         if (customer.length == 0) {
             const employee = await Employee.create(req.body)
             const token = jwt.sign({ Email: employee.Email, Role: employee.Role }, process.env.APP_SECRET)
+            bcrypt.hash(employee.Password, 10, function (error, hash) {
+                if (!error) {
+                    employee.Password = hash
+                }
+            })
+            await employee.save()
             res.status(200).json({
                 status: 'success',
                 data: {
@@ -142,13 +148,14 @@ exports.password = async (req, res, next) => {
 exports.profile = async (req, res, next) => {
     try {
         const { Username, Role } = req
+
         const employee = await Employee.find({ Email: Username })
 
         res.status(200).json({
             status: 'success',
             data: {
                 employee,
-                Role
+                Role,
             }
         })
     } catch (error) {
@@ -158,16 +165,13 @@ exports.profile = async (req, res, next) => {
 
 exports.editStatus = async (req, res, next) => {
     try {
-        const { Username, Role } = req
-        const employee = await Employee.find({ Email: Username })
-        employee[0].Status = !employee[0].Status
-        await employee[0].save()
-
+        const { email } = req.params
+        const employee = await Employee.findOne({ Email: email })
+        await Employee.findOneAndUpdate({ Email: email }, { Status: !employee.Status }, { new: true, runValidators: true });
         res.status(200).json({
             status: 'success',
             data: {
-                employee,
-                Role
+                employee
             }
         })
     } catch (error) {
@@ -176,13 +180,12 @@ exports.editStatus = async (req, res, next) => {
 }
 
 
-
 exports.editProfile = async (req, res, next) => {
     try {
-        const { Username } = req
         const { id } = req.params
-
         await Employee.findOneAndUpdate({ _id: id }, { ...req.body }, { new: true, runValidators: true })
+        const hash = await bcrypt.hash(req.body.Password, 10)
+        await Customer.findOneAndUpdate({ _id: id }, { Password: hash })
 
         res.status(200).json({
             status: 'success',
@@ -250,9 +253,11 @@ const getItems = async (Status, req, res, next) => {
         for (let i = 0; i < result.length; i++) {
             const counts = {};
             for (const order of result) {
-                counts[order.Item.Code] = counts[order.Item.Code] ? counts[order.Item.Code] + 1 : 1;
+                if (order.Employee === result[i].Employee) {
+                    counts[order.Item.Code] = counts[order.Item.Code] ? counts[order.Item.Code] + 1 : 1;
+                }
             }
-            const index = result.findIndex(obj => obj.Item.Code === result[i].Item.Code)
+            const index = result.findIndex(obj => obj.Item.Code === result[i].Item.Code && obj.Employee === result[i].Employee)
             if (index === i) {
                 const data = {
                     Employee: result[i].Employee,
@@ -330,10 +335,10 @@ exports.accept = async (req, res, next) => {
 exports.success = async (req, res, next) => {
     try {
         const { Username } = req
-        const { User, itemID, OrderDate, AcceptDate, Address } = req.body
+        const { User, itemID, OrderDate, AcceptDate, Address, check } = req.body
         const date = new Date();
         const employee = await Employee.find({ Email: Username })
-        const name = employee[0].FirstName + " " + employee[0].LastName
+        const name = check ? "" : employee[0].FirstName + " " + employee[0].LastName
         await Cart.updateOne({ $and: [{ Username: User }, { Status: "Completed" }] }, {
             $push: {
                 CartItems: {

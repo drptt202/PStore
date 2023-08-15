@@ -63,7 +63,7 @@ const Index = () => {
 
                             </button>
                             <form>
-                                <input type="text" className="h-6 w-14" maxLength="3" value={num} onChange={(e) => setNum(e.target.value)} />
+                                <input type="number" className="h-6 w-14" maxLength="3" value={num} min={0} onChange={(e) => setNum(e.target.value)} />
                             </form>
                             <button
                                 onClick={() => { deleteFromCart(item.Item.Code); setNum(pre => pre - 1) }}
@@ -127,7 +127,7 @@ const Index = () => {
                                             <div className="mt-8">
                                                 <div className="flow-root">
                                                     <ul role="list" className="-my-6 divide-y divide-gray-200">
-                                                        {cartData && cartData.length > 0
+                                                        {localStorage.getItem('Role') == 'User' && cartData && cartData.length > 0
                                                             ? cartData.map((item, index) => (
                                                                 <RenderItem item={item} index={index} key={index} />
                                                             ))

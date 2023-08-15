@@ -20,78 +20,63 @@ import ResultList from './components/Navigation/Search/resultList';
 import Admin from './components/Admin'
 import { AddProvider } from './Contexts/AddContext';
 import { AdminProvider } from './Contexts/AdminContext';
-import { role } from './store/store';
 import { EditProvider } from './Contexts/EditContext';
 
+const role = localStorage.getItem('Role')
 
 
-let router
-if (role == 'User') {
-  router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Home />,
-      errorElement: <PageError />,
-    },
-    {
-      path: "/dang-nhap",
-      element:
-        <Login />
-    },
-    {
-      path: "/dang-ky",
-      element:
-        <Register />
 
-    },
-    {
-      path: "/don-hang",
-      element: <Order />,
-    },
-    {
-      path: "/thanh-vien",
-      element:
-        <Profile />
-    },
-    {
-      path: "/:loai/:ten",
-      element: <ProductOverview />,
-    },
-    {
-      path: "/:loai",
-      element: <ProductLists />,
-    }
-    ,
-    {
-      path: "/search",
-      element: <ResultList />,
-    }
-  ])
-}
-else {
-  router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Home />,
-      errorElement: <PageError />,
-    },
-    {
-      path: "/admin/site/nhan-vien",
-      element: <Admin />,
-      errorElement: <PageError />,
-    },
-    {
-      path: "/dang-nhap",
-      element:
-        <Login />
-    },
-    {
-      path: "/dang-ky",
-      element:
-        <Register />
-    },
-  ])
-}
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+    errorElement: <PageError />,
+  },
+  {
+    path: "/dang-nhap",
+    element: <Login />,
+    errorElement: <PageError />,
+  },
+  {
+    path: "/dang-ky",
+    element: <Register />,
+    errorElement: <PageError />,
+  },
+  role == 'User' &&
+  {
+    path: "/don-hang",
+    element: <Order />,
+    errorElement: <PageError />,
+  },
+  role == 'User' &&
+  {
+    path: "/thanh-vien",
+    element: <Profile />,
+    errorElement: <PageError />,
+  },
+  {
+    path: "/:loai/:ten",
+    element: <ProductOverview />,
+    errorElement: <PageError />,
+  },
+  {
+    path: "/:loai",
+    element: <ProductLists />,
+    errorElement: <PageError />,
+  }
+  ,
+  {
+    path: "/search",
+    element: <ResultList />,
+    errorElement: <PageError />,
+  },
+  role != 'User' &&
+  {
+    path: "/admin/site/nhan-vien",
+    element: <Admin />,
+    errorElement: <PageError />,
+  }
+])
 ReactDOM.createRoot(document.getElementById('root')).render(
   <>
     <AdminProvider>

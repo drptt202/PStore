@@ -16,17 +16,12 @@ export const AdminProvider = ({ children }) => {
             }).catch((err) => {
                 console.log(err)
             })
-    }, [])
-
-    useEffect(() => {
         axiosCustom.get("/admin/customers")
             .then((res) => {
                 setCustomers(res.data.data.customers)
             }).catch((err) => {
                 console.log(err)
             })
-    }, [])
-    useEffect(() => {
         axiosCustom.get('/admin/employees')
             .then(res => {
                 setEmployees(res.data.data.employees)

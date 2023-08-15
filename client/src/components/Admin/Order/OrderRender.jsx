@@ -18,7 +18,6 @@ import { useEffect, useReducer, useState } from "react";
 import { getOrderbyAdmin } from "../../../services/ApiService";
 import { toast } from "react-hot-toast";
 import axiosCustom from "../../../utils/axiosCustom";
-import { role } from "../../../store/store";
 
 // const TABLE_HEAD = ["Sản phẩm", "Giá", "Số lượng", "Ngày đặt", "Tài khoản", "Trạng thái", "Thanh toán", "Tổng cộng", ""];
 
@@ -121,7 +120,7 @@ const OrderRender = (props) => {
                 <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
                     <div>
                         <Typography variant="h5" color="blue-gray">
-                            {role}
+                            {localStorage.getItem('Role')}
                         </Typography>
                     </div>
                     <div className="flex w-full shrink-0 gap-2 md:w-max">

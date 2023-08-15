@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 
 const employeeSchema = new mongoose.Schema({
     Email: { type: String, unique: true, trim: true, required: [true, 'Email must be required'] },
-    Password: { type: String, trim: true, required: [true, 'Password must be required'], minlength: [6, 'Password must be at least 6 characters'] },
+    Password: { type: String, trim: true, required: [true, 'Password must be required'], minlength: [6, 'Password must be at least 6 characters'], maxlength: 30 },
     FirstName: { type: String, trim: true, required: [true, 'First name must be required'] },
     LastName: { type: String, trim: true, required: [true, 'Last name must be required'] },
     DateOfBirth: { type: String, trim: true, required: [true, 'Date of birth must be required'] },
@@ -12,17 +12,26 @@ const employeeSchema = new mongoose.Schema({
     Status: Boolean
 }, { timestamps: true })
 
-employeeSchema.pre('save', function (next) {
+
+employeeSchema.pre('validate', function (next) {
     let employee = this
-    bcrypt.hash(employee.Password, 10, function (error, hash) {
-        if (error) {
-            return next(error)
-        } else {
-            employee.Password = hash
-            next()
-        }
-    })
-})
+    if (employee.Password.length > 30) {
+        next()
+    }
+    else {
+        employeeSchema.pre('save', function (next) {
+            bcrypt.hash(employee.Password, 10, function (error, hash) {
+                if (error) {
+                    return next(error)
+                } else {
+                    employee.Password = hash
+                    next()
+                }
+            })
+        })
+    }
+});
+
 const Employee = mongoose.model('Employee', employeeSchema)
 
 module.exports = Employee

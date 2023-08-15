@@ -1,4 +1,4 @@
-import { ShoppingBagIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { TrashIcon } from "@heroicons/react/24/solid";
 import {
     Card,
     Typography,
@@ -8,9 +8,11 @@ import {
     IconButton,
     Tooltip
 } from "@material-tailwind/react";
-import { useEffect, useReducer, useState } from "react";
-import { add1ToCart, deleteType, getOrder } from "../../services/ApiService";
+import { useContext, useEffect, useReducer, useState } from "react";
+import { deleteType, getOrder } from "../../services/ApiService";
 import { toast } from "react-hot-toast";
+import axiosCustom from "../../utils/axiosCustom";
+import { ProfileContext } from "../../Contexts/ProfileContext";
 
 
 const RenderItem = (props) => {
@@ -18,28 +20,37 @@ const RenderItem = (props) => {
     const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     // eslint-disable-next-line react/prop-types
     const { type } = props
-    const TABLE_HEAD = ["Sản phẩm", "Giá", "Số lượng", type === "type=1" ? "Ngày đặt" : type === "type=2" ? "Ngày rời kho" : type === "type=3" ? "Ngày nhận hàng" : "Ngày huỷ", type === "type=3" ? "Nhân viên" : "Trạng thái", "Thanh toán", "Tổng cộng", ""];
+    const TABLE_HEAD = ["Sản phẩm", "Giá", "Số lượng", type === "type=1" ? "Ngày đặt" : type === "type=2" ? "Ngày rời kho" : type === "type=3" ? "Ngày nhận hàng" : "Ngày huỷ", "Trạng thái", "Thanh toán", "Tổng cộng", type === "type=1" ? "Huỷ" : type === "type=2" ? "Đã nhận" : "Đánh giá"];
     const [data, setData] = useState([])
     const [allItems, setAllItems] = useState([])
 
     const [num, setNum] = useState({})
     const [disabled, setDisabled] = useState(false);
+    const { Username } = useContext(ProfileContext)
 
+    console.log('Username :>> ', Username);
 
-    const addToCart = (Code) => {
-        add1ToCart(Code)
-            .then(() => {
-                toast('Đã thêm vào giỏ hàng', {
-                    duration: 2000,
-                    position: 'top-center',
-                    className: 'bg-amber-700 w-80',
-                    icon: '✅',
-                    ariaProps: {
-                        role: 'status',
-                        'aria-live': 'polite',
-                    },
-                });
-            }).catch(err => console.log(err))
+    const success = async (itemID, OrderDate, AcceptDate, Address, check) => {
+        try {
+            for (let i = 0; i < allItems.length; i++) {
+                if (allItems[i].Item.Code === itemID) {
+                    await axiosCustom.post('/admin/order/success',
+                        { User: Username, itemID, OrderDate, AcceptDate, Address, check }
+                    ).then((res) => { console.log(res.status) })
+                        .catch((err) => { console.log(err) })
+                }
+            }
+            toast('Hoàn thành đơn hàng', {
+                duration: 2000,
+                position: 'top-center',
+                className: 'bg-amber-700 w-80',
+                icon: '✅',
+                ariaProps: {
+                    role: 'status',
+                    'aria-live': 'polite',
+                }
+            })
+        } catch (err) { console.log(err) }
     }
 
     const onClick = () => {
@@ -165,17 +176,44 @@ const RenderItem = (props) => {
                                         <td className={classes}>
                                             {
                                                 type === "type=1"
-                                                    ?
-                                                    <Tooltip>
-                                                        <IconButton variant="text" color="blue-gray" disabled={disabled} content="Huỷ" onClick={() => { deleteOrder(item.Item.Code, item.OrderDate, item.Address); onClick() }}>
-                                                            <TrashIcon className="h-4 w-4" />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                    : <Tooltip>
-                                                        <IconButton variant="text" color="blue-gray" disabled={disabled} content="Mua lại" onClick={() => { addToCart(item.Item.Code); onClick() }} >
-                                                            <ShoppingBagIcon className="h-4 w-4" />
-                                                        </IconButton>
-                                                    </Tooltip>
+                                                &&
+                                                <Tooltip>
+                                                    <IconButton variant="text" color="blue-gray" disabled={disabled} content="Huỷ" onClick={() => { deleteOrder(item.Item.Code, item.OrderDate, item.Address); onClick() }}>
+                                                        <TrashIcon className="h-5 w-5" />
+                                                    </IconButton>
+                                                </Tooltip>
+                                            }
+                                            {
+                                                type === "type=2"
+                                                &&
+                                                <Tooltip>
+                                                    <IconButton variant="text" color="blue-gray" disabled={disabled} content="Đã nhận hàng" onClick={() => { success(item.Item.Code, item.OrderDate, item.AcceptDate, item.Address, true); onClick() }} >
+                                                        <svg
+                                                            viewBox="0 0 24 24"
+                                                            fill="currentColor"
+                                                            height="2em"
+                                                            width="2em"
+                                                        >
+                                                            <path d="M18 18.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5m1.5-9H17V12h4.46L19.5 9.5M6 18.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5-1.5.67-1.5 1.5.67 1.5 1.5 1.5M20 8l3 4v5h-2c0 1.66-1.34 3-3 3s-3-1.34-3-3H9c0 1.66-1.34 3-3 3s-3-1.34-3-3H1V6c0-1.11.89-2 2-2h14v4h3M3 6v9h.76c.55-.61 1.35-1 2.24-1 .89 0 1.69.39 2.24 1H15V6H3m2 4.5L6.5 9 8 10.5 11.5 7 13 8.5l-5 5-3-3z" />
+                                                        </svg>
+                                                    </IconButton>
+                                                </Tooltip>
+                                            }
+                                            {
+                                                type === "type=3"
+                                                &&
+                                                <Tooltip>
+                                                    <IconButton variant="text" color="blue-gray" disabled={disabled} content="Đánh giá" onClick={() => { onClick() }} >
+                                                        <svg
+                                                            viewBox="0 0 24 24"
+                                                            fill="currentColor"
+                                                            height="2em"
+                                                            width="2em"
+                                                        >
+                                                            <path d="M16.23 18L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l1.92 4.53 4.92.42-3.73 3.23L16.23 18M12 2C6.47 2 2 6.5 2 12a10 10 0 0010 10 10 10 0 0010-10A10 10 0 0012 2z" />
+                                                        </svg>
+                                                    </IconButton>
+                                                </Tooltip>
                                             }
                                         </td>
                                     </tr>

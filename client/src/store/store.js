@@ -1,1 +1,0 @@
-export const role = localStorage.getItem('Role');

@@ -30,7 +30,6 @@ Router.route('/store').put(updateQuantity)
 
 Router.route('/product').post(addProduct)
 
-
 Router.route('/product/:code').delete(deleteProduct)
 
 Router.route('/product/:code').put(updateImg)
@@ -47,7 +46,7 @@ Router.route('/edit').put(verifyToken, editProfile)
 
 Router.route('/edit/:id').post(verifyToken, editProfile)
 
-Router.route('/edit').post(verifyToken, editStatus)
+Router.route('/edit/:email').put(verifyToken, editStatus)
 
 Router.route('/employees').get(getAllEmployees)
 

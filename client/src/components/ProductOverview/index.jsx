@@ -15,6 +15,7 @@ const Index = () => {
     const [count, setCount] = useState(1)
 
 
+
     useEffect(() => {
         productDetails(loai, ten)
             .then(res => {
@@ -134,7 +135,7 @@ const Index = () => {
                                     <div className="flex items-center justify-between">
                                         <h3 className="text-sm font-medium text-gray-900">Số lượng</h3>
                                     </div>
-                                    <Input type={'number'} value={count} onChange={e => { setCount(e.target.value) }} />
+                                    <Input type={'number'} value={count} min={1} max={store[product.Code]} onChange={e => { setCount(e.target.value) }} />
                                 </div>
                                 <div className='flex justify-between'>
                                     <button disabled={disabled} onClick={() => { onClick(); addToCart(product.Code); }}

@@ -19,6 +19,7 @@ exports.register = async (req, res, next) => {
         const employee = await Employee.find({ Email: req.body.Email })
         if (employee.length == 0) {
             const customer = await Customer.create(req.body)
+
             await Address.create({ Username: req.body.Username, Address: [] })
             const token = jwt.sign({ Username: customer.Username }, process.env.APP_SECRET)
             for (let item of status) {
@@ -51,7 +52,7 @@ exports.login = async (req, res, next) => {
 
         if (customer) {
             if (bcrypt.compareSync(req.body.Password, customer.Password)) {
-                const token = jwt.sign({ Username: customer.Username, Role: 'User' }, process.env.APP_SECRET)
+                const token = jwt.sign({ Username: customer.Username, Role: 'User', Password: req.body.Password }, process.env.APP_SECRET)
                 res.status(200).json({
                     status: 'success',
                     data: {
@@ -70,7 +71,7 @@ exports.login = async (req, res, next) => {
             }
             if (employee) {
                 if (bcrypt.compareSync(req.body.Password, employee.Password)) {
-                    const token = jwt.sign({ Username: employee.Email, Role: employee.Role }, process.env.APP_SECRET)
+                    const token = jwt.sign({ Username: employee.Email, Role: employee.Role, Password: req.body.Password }, process.env.APP_SECRET)
                     res.status(200).json({
                         status: 'success',
                         data: {
@@ -93,8 +94,7 @@ exports.login = async (req, res, next) => {
 exports.profile = async (req, res, next) => {
     try {
         const { Username } = req
-        const customer = await Customer.findOne({ Username })
-
+        const customer = await Customer.find({ Username })
         res.status(200).json({
             status: 'success',
             data: {
@@ -126,9 +126,9 @@ exports.password = async (req, res, next) => {
     try {
         const { Username } = req
         const customer = await Customer.findOne({ Username: Username })
+        const hash = await bcrypt.hash(req.body.newPassword, 10)
         if (bcrypt.compareSync(req.body.oldPassword, customer.Password)) {
-            customer.Password = req.body.newPassword
-            await customer.save()
+            await Customer.findOneAndUpdate({ Username: Username }, { Password: hash })
 
             res.status(200).json({
                 status: 'success'

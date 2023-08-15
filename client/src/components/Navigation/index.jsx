@@ -29,8 +29,9 @@ const Index = () => {
     }
     return (
         <div className="bg-white">
-            {/* Mobile menu */}
-            <Transition.Root show={openMenu} as={Fragment}>
+
+
+            {/* <Transition.Root show={openMenu} as={Fragment}>
                 <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpenMenu}>
                     <Transition.Child
                         as={Fragment}
@@ -66,7 +67,7 @@ const Index = () => {
                                     </button>
                                 </div>
 
-                                {/* Links */}
+
                                 <Tab.Group as="div" className="mt-2">
                                     <div className="border-b border-gray-200">
                                         <Tab.List className="-mb-px flex space-x-8 px-4">
@@ -161,7 +162,7 @@ const Index = () => {
                         </Transition.Child>
                     </div>
                 </Dialog>
-            </Transition.Root>
+            </Transition.Root> */}
 
             <header className="relative bg-white">
                 <p className="flex h-10 items-center justify-center bg-amber-400 px-4 text-sm font-medium text-black sm:px-6 lg:px-8">
@@ -332,27 +333,33 @@ const Index = () => {
                                                 leaveTo="transform opacity-0 scale-95"
                                             >
                                                 <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                                    <Menu.Item>
-                                                        {({ active }) => (
-                                                            <a
-                                                                href="/thanh-vien"
-                                                                className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                                                            >
-                                                                Tài khoản
-                                                            </a>
-                                                        )}
-                                                    </Menu.Item>
+                                                    {
+                                                        localStorage.getItem('Role') == 'User' &&
+                                                        <>
+                                                            <Menu.Item>
+                                                                {({ active }) => (
+                                                                    <a
+                                                                        href="/thanh-vien"
+                                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                                    >
+                                                                        Tài khoản
+                                                                    </a>
+                                                                )}
+                                                            </Menu.Item>
 
-                                                    <Menu.Item>
-                                                        {({ active }) => (
-                                                            <a
-                                                                href="/don-hang?Type=1"
-                                                                className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                                                            >
-                                                                Đơn hàng
-                                                            </a>
-                                                        )}
-                                                    </Menu.Item>
+                                                            <Menu.Item>
+                                                                {({ active }) => (
+                                                                    <a
+                                                                        href="/don-hang?Type=1"
+                                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                                    >
+                                                                        Đơn hàng
+                                                                    </a>
+                                                                )}
+                                                            </Menu.Item>
+                                                        </>
+                                                    }
+
 
                                                     <Menu.Item>
                                                         {({ active }) => (

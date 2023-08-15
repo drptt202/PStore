@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
     Card,
     CardBody,
@@ -53,6 +53,15 @@ const Index = () => {
     const [address, setAddress] = useState('')
     const navigate = useNavigate()
 
+    useEffect(() => {
+        setID(profileData.ID)
+        setFirstName(profileData.FirstName)
+        setLastName(profileData.LastName)
+        setDateOfBirth(profileData.DateOfBirth)
+        setPhone(profileData.Phone)
+        setEmail(profileData.Email)
+    }, [profileData])
+
     const handleChange = () => {
         if (password2 == newPassword) {
             axiosCustom.put('/auth/password', {
@@ -88,6 +97,7 @@ const Index = () => {
             })
         navigate('/')
     }
+    console.log('profileData :>> ', profileData);
     return (
         <>
             <Navigation />
@@ -135,37 +145,37 @@ const Index = () => {
                                                 <span className="float-left">
                                                     Email:
                                                 </span>
-                                                <input className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type="email" placeholder={profileData.Email} onChange={(e) => setEmail(e.target.value)} />
+                                                <input className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" type="email" value={Email} onChange={(e) => setEmail(e.target.value)} />
                                             </label>
                                             <label>
                                                 <span className="float-left">
                                                     Họ:
                                                 </span>
-                                                <input className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder={profileData.FirstName} onChange={(e) => setFirstName(e.target.value)} />
+                                                <input className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value={FirstName} onChange={(e) => setFirstName(e.target.value)} />
                                             </label>
                                             <label>
                                                 <span className="float-left">
                                                     Tên:
                                                 </span>
-                                                <input className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder={profileData.LastName} onChange={(e) => setLastName(e.target.value)} />
+                                                <input className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value={LastName} onChange={(e) => setLastName(e.target.value)} />
                                             </label>
                                             <label>
                                                 <span className="float-left">
                                                     Ngày sinh:
                                                 </span>
-                                                <input className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder={profileData.DateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} />
+                                                <input className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value={DateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} />
                                             </label>
                                             <label>
                                                 <span className="float-left">
                                                     SDT:
                                                 </span>
-                                                <input className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder={profileData.Phone} onChange={(e) => setPhone(e.target.value)} />
+                                                <input className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value={Phone} onChange={(e) => setPhone(e.target.value)} />
                                             </label>
                                             <label>
                                                 <span className="float-left">
                                                     CMND:
                                                 </span>
-                                                <input className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder={profileData.ID} onChange={(e) => setID(e.target.value)} />
+                                                <input className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" value={ID} onChange={(e) => setID(e.target.value)} />
                                             </label>
                                         </div>
 

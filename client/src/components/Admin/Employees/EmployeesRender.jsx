@@ -19,7 +19,6 @@ import { OPEN_ADD, OPEN_EDIT } from "../../../reducers/types";
 import { AddContext } from "../../../Contexts/AddContext";
 import axiosCustom from "../../../utils/axiosCustom";
 import { toast } from "react-hot-toast";
-import { role } from "../../../store/store";
 import { EditContext } from "../../../Contexts/EditContext";
 import EditEmployee from "./EditEmployee";
 
@@ -33,8 +32,8 @@ const EmployeesRender = (props) => {
     const { editDispatch2 } = useContext(EditContext)
 
 
-    const changeStatus = () => {
-        axiosCustom.post('/admin/edit')
+    const changeStatus = (email) => {
+        axiosCustom.put(`/admin/edit/${email}`)
             .then(() => { toast.success("Cập nhật thành công") })
             .catch(err => { toast.error(err) });
     }
@@ -48,7 +47,7 @@ const EmployeesRender = (props) => {
                 <div className="mb-4 flex flex-col justify-between gap-8 md:flex-row md:items-center">
                     <div>
                         <Typography variant="h5" color="blue-gray">
-                            {role}
+                            {localStorage.getItem('Role')}
                         </Typography>
                     </div>
                     <div className="flex w-full shrink-0 gap-2 md:w-max">
@@ -142,7 +141,7 @@ const EmployeesRender = (props) => {
                                                         <MenuList>
                                                             <MenuItem onClick={() => { editDispatch2({ type: OPEN_EDIT }) }}>Chỉnh sửa</MenuItem>
                                                             <EditEmployee data={item} />
-                                                            <MenuItem onClick={changeStatus}>Đổi trạng thái</MenuItem>
+                                                            <MenuItem onClick={() => changeStatus(item.Email)}>Đổi trạng thái</MenuItem>
                                                         </MenuList>
                                                     </Menu>
                                                 </Tooltip>

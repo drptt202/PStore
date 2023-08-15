@@ -9,15 +9,6 @@ export const ProductProvider = ({ children }) => {
     const [selling, setSelling] = useState([])
     const [store, setStore] = useState([])
 
-
-    useEffect(() => {
-        axiosCustom.get("/store/item")
-            .then((res) => {
-                setStore(res.data.data.store.ProductCode)
-            }).catch((err) => {
-                console.log(err)
-            })
-    }, [])
     useEffect(() => {
         axiosCustom.get("/product/top-5")
             .then((res) => {
@@ -25,12 +16,15 @@ export const ProductProvider = ({ children }) => {
             }).catch((err) => {
                 console.log(err)
             })
-    }, [])
-
-    useEffect(() => {
         axiosCustom.get("/product/top-selling")
             .then((res) => {
                 setSelling(res.data.data.products)
+            }).catch((err) => {
+                console.log(err)
+            })
+        axiosCustom.get("/store/item")
+            .then((res) => {
+                setStore(res.data.data.store.ProductCode)
             }).catch((err) => {
                 console.log(err)
             })

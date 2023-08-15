@@ -3,14 +3,11 @@ import classNames from 'classnames'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import StoreRender from './Store/StoreRender'
 import OrderRender from './Order/OrderRender'
-import Profile from './Profile'
 import { useContext } from 'react'
 import { TABLE_HEAD1, TABLE_HEAD2, TABLE_HEAD3, TABLE_HEAD4, TABLE_HEAD5, TABLE_HEAD6, TABLE_HEAD7, TABLE_HEAD8 } from './table_head'
 import EmployeesRender from './Employees/EmployeesRender'
 import { AdminContext } from '../../Contexts/AdminContext'
 import CustomerRender from './Customers/CustomersRender'
-import { role } from '../../store/store'
-
 
 const Index = () => {
     const navigate = useNavigate()
@@ -246,7 +243,7 @@ const Index = () => {
                     } */}
                     {query == 1 && <StoreRender data={products} TABLE_HEAD={TABLE_HEAD1} type={`type=${query}`} />}
                     {query == 2 && <StoreRender data={products} TABLE_HEAD={TABLE_HEAD2} type={`type=${query}`} />}
-                    {role == "Admin" && query == 3 && <EmployeesRender data={employees} TABLE_HEAD={TABLE_HEAD3} type={`type=${query}`} />}
+                    {localStorage.getItem('Role') == "Admin" && query == 3 && <EmployeesRender data={employees} TABLE_HEAD={TABLE_HEAD3} type={`type=${query}`} />}
                     {query == 4 && <OrderRender TABLE_HEAD={TABLE_HEAD4} type={`type=${query}`} />}
                     {query == 5 && <OrderRender TABLE_HEAD={TABLE_HEAD5} type={`type=${query}`} />}
                     {query == 6 && <OrderRender TABLE_HEAD={TABLE_HEAD6} type={`type=${query}`} />}
