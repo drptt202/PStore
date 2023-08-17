@@ -10,6 +10,7 @@ Router.route('/search/:keyword').get(searchbyKeyword)
 
 Router.route('/search/:keyword').post(searchTop5)
 
+
 Router.route('/:category').get(getAllbyCategory)
 Router.route('/:category/n/:brand').get(getAllbyCategoryandBrand);
 Router.route('/:category/:name').get(getProductDetails)

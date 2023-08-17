@@ -21,6 +21,7 @@ import Admin from './components/Admin'
 import { AddProvider } from './Contexts/AddContext';
 import { AdminProvider } from './Contexts/AdminContext';
 import { EditProvider } from './Contexts/EditContext';
+import { CommentProvider } from './Contexts/CommentContext';
 
 const role = localStorage.getItem('Role')
 
@@ -83,11 +84,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <ProductProvider>
         <ProfileProvider>
           <CartProvider>
-            <EditProvider>
-              <AddProvider>
-                <RouterProvider router={router} />
-              </AddProvider>
-            </EditProvider>
+            <CommentProvider>
+              <EditProvider>
+                <AddProvider>
+                  <RouterProvider router={router} />
+                </AddProvider>
+              </EditProvider>
+            </CommentProvider>
           </CartProvider>
         </ProfileProvider>
       </ProductProvider>

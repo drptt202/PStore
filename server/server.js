@@ -10,7 +10,6 @@ const productRoute = require('./routes/productRoute')
 const cartRoute = require('./routes/cartRoute')
 const adminRoute = require('./routes/adminRoute')
 const storeRoute = require('./routes/storeRoute')
-const commentRoute = require('./routes/commentRoute')
 
 
 
@@ -26,7 +25,6 @@ app.use('/api/v1/product', productRoute)
 app.use('/api/v1/cart', cartRoute)
 app.use('/api/v1/admin', adminRoute)
 app.use('/api/v1/store', storeRoute)
-app.use('/api/v1/comment', commentRoute)
 
 
 

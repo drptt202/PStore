@@ -13,11 +13,15 @@ import { deleteType, getOrder } from "../../services/ApiService";
 import { toast } from "react-hot-toast";
 import axiosCustom from "../../utils/axiosCustom";
 import { ProfileContext } from "../../Contexts/ProfileContext";
+import RatingProduct from "./Rating";
+import { CommentContext } from "../../Contexts/CommentContext";
+import { OPEN_COMMENT } from "../../reducers/types";
 
 
 const RenderItem = (props) => {
     // eslint-disable-next-line no-unused-vars
     const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+    const { dispatch } = useContext(CommentContext)
     // eslint-disable-next-line react/prop-types
     const { type } = props
     const TABLE_HEAD = ["Sản phẩm", "Giá", "Số lượng", type === "type=1" ? "Ngày đặt" : type === "type=2" ? "Ngày rời kho" : type === "type=3" ? "Ngày nhận hàng" : "Ngày huỷ", "Trạng thái", "Thanh toán", "Tổng cộng", type === "type=1" ? "Huỷ" : type === "type=2" ? "Đã nhận" : "Đánh giá"];
@@ -200,20 +204,23 @@ const RenderItem = (props) => {
                                                 </Tooltip>
                                             }
                                             {
-                                                type === "type=3"
+                                                type === "type=3" && item.Rating.length === 0
                                                 &&
-                                                <Tooltip>
-                                                    <IconButton variant="text" color="blue-gray" disabled={disabled} content="Đánh giá" onClick={() => { onClick() }} >
-                                                        <svg
-                                                            viewBox="0 0 24 24"
-                                                            fill="currentColor"
-                                                            height="2em"
-                                                            width="2em"
-                                                        >
-                                                            <path d="M16.23 18L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l1.92 4.53 4.92.42-3.73 3.23L16.23 18M12 2C6.47 2 2 6.5 2 12a10 10 0 0010 10 10 10 0 0010-10A10 10 0 0012 2z" />
-                                                        </svg>
-                                                    </IconButton>
-                                                </Tooltip>
+                                                <>
+                                                    <Tooltip>
+                                                        <IconButton variant="text" color="blue-gray" disabled={disabled} content="Đánh giá" onClick={() => { onClick(); dispatch({ type: OPEN_COMMENT }) }} >
+                                                            <svg
+                                                                viewBox="0 0 24 24"
+                                                                fill="currentColor"
+                                                                height="2em"
+                                                                width="2em"
+                                                            >
+                                                                <path d="M16.23 18L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l1.92 4.53 4.92.42-3.73 3.23L16.23 18M12 2C6.47 2 2 6.5 2 12a10 10 0 0010 10 10 10 0 0010-10A10 10 0 0012 2z" />
+                                                            </svg>
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                    <RatingProduct item={item} />
+                                                </>
                                             }
                                         </td>
                                     </tr>

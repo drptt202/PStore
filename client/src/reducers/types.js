@@ -7,3 +7,5 @@ export const OPEN_ADD = 'OPEN_ADD'
 export const OPEN_EDIT = 'OPEN_EDIT'
 
 export const OPEN_ADDRESS = 'OPEN_ADDRESS'
+
+export const OPEN_COMMENT = 'OPEN_COMMENT'

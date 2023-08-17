@@ -244,7 +244,8 @@ const getItems = async (Status, req, res, next) => {
                     AcceptDate: product.AcceptDate,
                     Date: product.Date,
                     CancelledDate: product.CancelledDate,
-                    Address: product.Address
+                    Address: product.Address,
+                    Rating: product.Rating
                 }
                 result = [...result, data]
             }
@@ -253,11 +254,11 @@ const getItems = async (Status, req, res, next) => {
         for (let i = 0; i < result.length; i++) {
             const counts = {};
             for (const order of result) {
-                if (order.Employee === result[i].Employee) {
+                if (order.Employee === result[i].Employee && order.OrderDate === result[i].OrderDate) {
                     counts[order.Item.Code] = counts[order.Item.Code] ? counts[order.Item.Code] + 1 : 1;
                 }
             }
-            const index = result.findIndex(obj => obj.Item.Code === result[i].Item.Code && obj.Employee === result[i].Employee)
+            const index = result.findIndex(obj => obj.Item.Code === result[i].Item.Code && obj.Employee === result[i].Employee && obj.OrderDate === result[i].OrderDate)
             if (index === i) {
                 const data = {
                     Employee: result[i].Employee,
@@ -268,7 +269,8 @@ const getItems = async (Status, req, res, next) => {
                     AcceptDate: result[i].AcceptDate,
                     Date: result[i].Date,
                     CancelledDate: result[i].CancelledDate,
-                    Count: counts[result[i].Item.Code]
+                    Count: counts[result[i].Item.Code],
+                    Rating: result[i].Rating
                 }
                 carts = [...carts, data]
             }
@@ -304,7 +306,8 @@ exports.accept = async (req, res, next) => {
                     AcceptDate: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`,
                     Date: "",
                     CancelledDate: "",
-                    Address: Address
+                    Address: Address,
+                    Rating: []
                 },
             }
         })
@@ -348,7 +351,8 @@ exports.success = async (req, res, next) => {
                     AcceptDate: AcceptDate,
                     Date: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`,
                     CancelledDate: "",
-                    Address: Address
+                    Address: Address,
+                    Rating: []
                 },
             }
         })

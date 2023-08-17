@@ -187,25 +187,7 @@ const Index = () => {
                                         <span>Đơn bị trả/huỷ</span>
                                     </Tab>
                                 </Tab.List>
-                                <Tab.List className="rounded-sm">
-                                    <Tab
-                                        className={() =>
-                                            classNames('border-transparent text-gray-900 flex items-center p-2 space-x-3 rounded-md'
-                                            )
-                                        }
-                                    >
-                                        <svg
-                                            viewBox="0 0 24 24"
-                                            fill="currentColor"
-                                            height="2em"
-                                            width="2em"
-                                        >
-                                            <path d="M19 19H5V5h14m0-2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2m-2.5 13.25c0-1.5-3-2.25-4.5-2.25s-4.5.75-4.5 2.25V17h9M12 12.25A2.25 2.25 0 0014.25 10 2.25 2.25 0 0012 7.75 2.25 2.25 0 009.75 10 2.25 2.25 0 0012 12.25z" />
-                                        </svg>
-                                        <span>Tài khoản</span>
-                                    </Tab>
 
-                                </Tab.List>
                                 {/* <Profile /> */}
                                 <Tab.List className="rounded-sm">
                                     <Tab

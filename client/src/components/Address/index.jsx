@@ -7,7 +7,7 @@ import {
     MenuItem,
     Input,
 } from "@material-tailwind/react";
-import { OPEN_ADDRESS } from "../../reducers/types";
+import { OPEN_ADDRESS, OPEN_CART } from "../../reducers/types";
 import { useContext, useState } from "react";
 import { CartContext } from "../../Contexts/CartContext";
 import { PlusIcon } from "@heroicons/react/24/outline";
@@ -16,7 +16,7 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
-    const { allItems, address, open1, dispatch1 } = useContext(CartContext)
+    const { allItems, address, open1, dispatch1, dispatch } = useContext(CartContext)
     const navigate = useNavigate()
     const [text, setText] = useState('')
 
@@ -64,7 +64,7 @@ const Index = () => {
                         {address && address.length > 0 &&
                             address.map((item, index) => (
                                 <MenuItem
-                                    onClick={() => { checkOut(item); dispatch1({ type: OPEN_ADDRESS }) }}
+                                    onClick={() => { checkOut(item); dispatch({ type: OPEN_CART }) }}
                                     key={index} className="flex items-center gap-3">
                                     <Typography color="blue-gray" variant="h6">
                                         {item}
@@ -84,7 +84,7 @@ const Index = () => {
                     </Typography>
                     <Input color="blue" onChange={(e) => setText(e.target.value)}
                         icon={<PlusIcon
-                            onClick={() => { checkOut(text); dispatch1({ type: OPEN_ADDRESS }) }}
+                            onClick={() => { checkOut(text); dispatch({ type: OPEN_CART }) }}
                         />} />
                 </div>
             </DialogBody>

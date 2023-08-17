@@ -5,7 +5,6 @@ import Navigation from '../Navigation'
 import { useParams } from 'react-router-dom'
 import { add1ToCart, productDetails } from './../../services/ApiService';
 import { ProductContext } from '../../Contexts/ProductContext'
-const reviews = { href: '#', average: 4, totalCount: 117 }
 
 const Index = () => {
     const { loai, ten } = useParams()
@@ -112,16 +111,16 @@ const Index = () => {
                             <p className="text-3xl tracking-tight text-gray-900">{product.Price}</p>
 
                             {/* Reviews */}
-                            <div className="mt-6">
+                            {/* <div className="mt-6">
                                 <div className="flex items-center">
                                     <div className="flex items-center">
                                         <Rating value={4} readonly />
                                     </div>
-                                    <a href={reviews.href} className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                                        {reviews.totalCount} reviews
+                                    <a href={'#'} className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                                        117 reviews
                                     </a>
                                 </div>
-                            </div>
+                            </div> */}
 
                             <div className="mt-10">
                                 {/* Trạng thái */}
@@ -190,27 +189,6 @@ const Index = () => {
                                         }
 
                                     </ul>
-                                </div>
-                            </div>
-
-                            <div className="space-y-6">
-                                <div className="flex mx-auto items-center justify-center shadow-lg mt-6 mb-4 max-w-lg">
-                                    <form className="w-full max-w-xl bg-white rounded-lg px-4 pt-2">
-                                        <div className="flex flex-wrap -mx-3 mb-6">
-                                            <h2 className="px-4 pt-3 pb-2 text-gray-800 text-lg"><Rating /></h2>
-                                            <div className="w-full md:w-full px-3 mb-2 mt-2">
-                                                <textarea className="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white" name="body" placeholder='Nhập đánh giá của bạn' required></textarea>
-                                            </div>
-                                            <div className="w-full md:w-full flex items-start px-3">
-                                                <div className="flex items-start w-1/2 text-gray-700 px-2 mr-auto">
-
-                                                </div>
-                                                <div className="-mr-1">
-                                                    <input type='submit' className="cursor-pointer bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100" value='Gửi đánh giá' />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
                                 </div>
                             </div>
                         </div>

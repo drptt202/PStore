@@ -13,7 +13,8 @@ const getItems = async (Username, Status, req, res, next) => {
                 AcceptDate: item.AcceptDate,
                 Date: item.Date,
                 CancelledDate: item.CancelledDate,
-                Address: item.Address
+                Address: item.Address,
+                Rating: item.Rating
             }
             result = [...result, data]
         }
@@ -142,7 +143,8 @@ exports.checkOut = async function (req, res, next) {
                     AcceptDate: "",
                     Date: "",
                     CancelledDate: "",
-                    Address
+                    Address,
+                    Rating: []
                 },
             }
         })
@@ -202,7 +204,8 @@ exports.cancelOrder = async function (req, res, next) {
                     AcceptDate: "",
                     Date: "",
                     CancelledDate: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`,
-                    Address: Address
+                    Address: Address,
+                    Rating: []
                 },
             }
         })
@@ -213,13 +216,55 @@ exports.cancelOrder = async function (req, res, next) {
                 },
             },
         })
-        const carts = await Cart.find({ $and: [{ Username: Username }, { Status: "Cancelled" }] })
         res.status(200).json({
             status: "success",
             data: {
                 Status: "Cancelled",
             }
         })
+    }
+    catch (err) {
+        res.json(err)
+    }
+}
+
+exports.comment = async function (req, res, next) {
+    try {
+
+        const { Username } = req
+        const { Point, Title, Employee, Item, OrderDate, AcceptDate, Date, Address } = req.body
+        let data = {
+            "Point": Point,
+            "Title": Title
+        }
+
+        const carts = await Cart.findOne({ $and: [{ Username: Username }, { Status: "Completed" }] })
+        const result = carts.CartItems
+        for (let index = 0; index < result.length; index++) {
+            if (result[index].Employee === Employee,
+                result[index].Item === Item,
+                result[index].OrderDate === OrderDate,
+                result[index].AcceptDate === AcceptDate,
+                result[index].Date === Date,
+                result[index].Address === Address
+            ) {
+                await Cart.updateOne({ $and: [{ Username: Username }, { Status: "Completed" }] },
+                    {
+                        $push: {
+                            [`CartItems.${index}.Rating`]: data
+                        }
+                    })
+
+            }
+        }
+        res.status(200).json({
+            status: "success",
+            data: {
+                string
+            }
+
+        })
+
     }
     catch (err) {
         res.json(err)
