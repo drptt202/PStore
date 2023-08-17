@@ -11,7 +11,6 @@ export const CartProvider = ({ children }) => {
     const [open1, dispatch1] = useReducer(addressReducer, false)
     const [cartData, setCartData] = useState([])
     const [countItem, setCountItem] = useState()
-    const [numOfI, setNumOfI] = useState([])
     const [total, setTotal] = useState(0)
     const [allItems, setAllItems] = useState([])
     const [address, setAddress] = useState([])
@@ -20,7 +19,6 @@ export const CartProvider = ({ children }) => {
         axiosCustom.get('/cart')
             .then(res => {
                 setCartData(res.data.data.carts)
-                setNumOfI(res.data.data.count)
                 setCountItem(res.data.data.result.length)
                 setAllItems(res.data.data.result)
 
@@ -39,7 +37,6 @@ export const CartProvider = ({ children }) => {
     const CartContextData = {
         allItems,
         total,
-        numOfI,
         countItem,
         cartData,
         address,

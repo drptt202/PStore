@@ -21,7 +21,10 @@ const Index = () => {
                             <Tab.Group as='div' className="pt-2 pb-4 space-y-1 text-sm">
                                 <Tab.List className="rounded-sm">
                                     <Tab
-                                        onClick={() => { setSearchParams('?Type=1') }}
+                                        onClick={() => {
+                                            setSearchParams('?Type=1');
+                                            window.location.reload();
+                                        }}
                                         key={1}
                                         className={() =>
                                             classNames(
@@ -36,7 +39,10 @@ const Index = () => {
                                 </Tab.List>
                                 <Tab.List className="rounded-sm">
                                     <Tab
-                                        onClick={() => { setSearchParams('?Type=2') }}
+                                        onClick={() => {
+                                            setSearchParams('?Type=2');
+                                            window.location.reload();
+                                        }}
 
                                         key={2}
                                         className={() =>
@@ -51,7 +57,10 @@ const Index = () => {
                                 </Tab.List>
                                 <Tab.List className="rounded-sm">
                                     <Tab
-                                        onClick={() => { setSearchParams('?Type=3') }}
+                                        onClick={() => {
+                                            setSearchParams('?Type=3');
+                                            window.location.reload();
+                                        }}
 
                                         key={3}
                                         className={() =>
@@ -67,7 +76,10 @@ const Index = () => {
                                 </Tab.List>
                                 <Tab.List className="rounded-sm">
                                     <Tab
-                                        onClick={() => { setSearchParams('?Type=4') }}
+                                        onClick={() => {
+                                            setSearchParams('?Type=4');
+                                            window.location.reload();
+                                        }}
 
                                         key={4}
                                         className={() =>

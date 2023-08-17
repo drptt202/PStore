@@ -8,7 +8,7 @@ import {
     IconButton,
     Tooltip
 } from "@material-tailwind/react";
-import { useContext, useEffect, useReducer, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { deleteType, getOrder } from "../../services/ApiService";
 import { toast } from "react-hot-toast";
 import axiosCustom from "../../utils/axiosCustom";
@@ -20,15 +20,12 @@ import { OPEN_COMMENT } from "../../reducers/types";
 
 const RenderItem = (props) => {
     // eslint-disable-next-line no-unused-vars
-    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     const { dispatch } = useContext(CommentContext)
     // eslint-disable-next-line react/prop-types
     const { type } = props
     const TABLE_HEAD = ["Sản phẩm", "Giá", "Số lượng", type === "type=1" ? "Ngày đặt" : type === "type=2" ? "Ngày rời kho" : type === "type=3" ? "Ngày nhận hàng" : "Ngày huỷ", "Trạng thái", "Thanh toán", "Tổng cộng", type === "type=1" ? "Huỷ" : type === "type=2" ? "Đã nhận" : "Đánh giá"];
     const [data, setData] = useState([])
     const [allItems, setAllItems] = useState([])
-
-    const [num, setNum] = useState({})
     const [disabled, setDisabled] = useState(false);
     const { Username } = useContext(ProfileContext)
 
@@ -68,10 +65,9 @@ const RenderItem = (props) => {
         getOrder(type)
             .then(res => {
                 setData(res.data.data.carts)
-                setNum(res.data.data.count)
                 setAllItems(res.data.data.result)
             })
-    }, [ignored, type])
+    }, [type])
     const deleteOrder = (Code, OrderDate, Address) => {
         try {
             for (let i = 0; i < allItems.length; i++) {
@@ -139,7 +135,7 @@ const RenderItem = (props) => {
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {num[item.Item.Code]}
+                                                {item.Count}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -174,7 +170,7 @@ const RenderItem = (props) => {
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {num[item.Item.Code] * item.Item.Price} đ
+                                                {item.Count * item.Item.Price} đ
                                             </Typography>
                                         </td>
                                         <td className={classes}>

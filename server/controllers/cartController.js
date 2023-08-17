@@ -18,22 +18,38 @@ const getItems = async (Username, Status, req, res, next) => {
             }
             result = [...result, data]
         }
+        let carts = []
+        for (let i = 0; i < result.length; i++) {
+            const counts = {};
+            for (const order of result) {
+                if (order.Employee === result[i].Employee && order.OrderDate === result[i].OrderDate) {
+                    counts[order.Item.Code] = counts[order.Item.Code] ? counts[order.Item.Code] + 1 : 1;
+                }
+            }
+            const index = result.findIndex(obj => obj.Item.Code === result[i].Item.Code && obj.Employee === result[i].Employee && obj.OrderDate === result[i].OrderDate)
+            if (index === i) {
+                const data = {
+                    Employee: result[i].Employee,
+                    Address: result[i].Address,
+                    Username: result[i].Username,
+                    Item: result[i].Item,
+                    OrderDate: result[i].OrderDate,
+                    AcceptDate: result[i].AcceptDate,
+                    Date: result[i].Date,
+                    CancelledDate: result[i].CancelledDate,
+                    Count: counts[result[i].Item.Code],
+                    Rating: result[i].Rating
+                }
+                carts = [...carts, data]
+            }
+        }
 
-        let carts = result.filter((item, index) => {
-            return result.findIndex(obj => obj.Item.Code === item.Item.Code) === index;
-        });
-
-        let count = result.reduce((acc, val) => {
-            acc[val.Item.Code] = (acc[val.Item.Code] || 0) + 1;
-            return acc;
-        }, {});
 
         res.status(200).json({
             status: "success",
             data: {
                 result,
                 carts,
-                count,
                 Status
             }
         })

@@ -21,7 +21,7 @@ const RatingProduct = (props) => {
             AcceptDate: item.AcceptDate,
             Date: item.Date,
             Address: item.Address,
-        }).then((res) => { toast.success('Đã gửi đánh giá'); console.log('res.data.data.string :>> ', res.data.data.string); })
+        }).then(() => { window.location.reload(); toast.success('Đã gửi đánh giá') })
             .catch(err => { console.log(err) })
     }
 

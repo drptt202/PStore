@@ -5,6 +5,7 @@ import Navigation from '../Navigation'
 import { useParams } from 'react-router-dom'
 import { add1ToCart, productDetails } from './../../services/ApiService';
 import { ProductContext } from '../../Contexts/ProductContext'
+const reviews = { href: '#', average: 4, totalCount: 117 }
 
 const Index = () => {
     const { loai, ten } = useParams()
@@ -116,8 +117,8 @@ const Index = () => {
                                     <div className="flex items-center">
                                         <Rating value={4} readonly />
                                     </div>
-                                    <a href={'#'} className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                                        117 reviews
+                                    <a href={reviews.href} className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                                        {reviews.totalCount} reviews
                                     </a>
                                 </div>
                             </div> */}

@@ -26,6 +26,7 @@ const Index = () => {
                 checkout(allItems[i].Item.Code, address)
             }
             toast.success("Đặt hàng thành công")
+            window.location.reload()
             navigate('/don-hang?Type=1')
         } catch (err) { console.log(err) }
     }

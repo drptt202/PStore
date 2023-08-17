@@ -13,7 +13,7 @@ import {
 } from "@material-tailwind/react";
 
 const Index = () => {
-    const { total, numOfI, cartData, open, dispatch, dispatch1 } = useContext(CartContext)
+    const { total, cartData, open, dispatch, dispatch1 } = useContext(CartContext)
     const addToCart = (ma) => {
         add1ToCart(ma)
             .then(() => {
@@ -29,7 +29,7 @@ const Index = () => {
         const { item, index } = props
         const [num, setNum] = useState(0)
         useEffect(() => {
-            setNum(numOfI[item.Item.Code])
+            setNum(item.Count)
         }, [])
         return (
             <li className="flex py-6">
